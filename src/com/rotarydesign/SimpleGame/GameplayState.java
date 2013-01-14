@@ -153,7 +153,7 @@ public class GameplayState extends BasicGameState{
         }
         in.close();*/
 
-    	land = new Image("assets/background_space.png");
+    	//land = new Image("assets/background_space.png");
     	plane = new Image("assets/ship.png");
     	
 		planePoly = new Polygon(new float[]{
