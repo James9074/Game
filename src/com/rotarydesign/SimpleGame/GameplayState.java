@@ -507,7 +507,7 @@ public class GameplayState extends BasicGameState{
         {
             //float hip = 0.4f * delta;
         	
-        	if(bulletPassing < 200 && cooldown == false){
+        	if(bulletPassing < (200/16) * delta*.5f && cooldown == false){
         	if(lastFire > 80){
         	bullets.add(new Bullet(x+112,y+26,2,20));
             laser.play(1f,.3f);

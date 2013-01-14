@@ -24,7 +24,7 @@ public class SimpleGame extends StateBasedGame {
     {
          AppGameContainer app = new AppGameContainer(new SimpleGame());
  
-         
+         System.setProperty("org.lwjgl.opengl.Display.allowSoftwareOpenGL","true");
          app.setDisplayMode(800, 400, false);
         // app.setVSync(true);
          app.setTargetFrameRate(60);
