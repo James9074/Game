@@ -178,9 +178,13 @@ public class GameplayState extends BasicGameState{
     	smoke = new Sound("assets/smoke.wav");
     	
     	backgrounds.add(new Background(0,0,1));
-    	backgrounds.add(new Background(800,0,2));
-    	backgrounds.add(new Background(1600,0,3));
-    	backgrounds.add(new Background(2400,0,4));
+    	backgrounds.add(new Background(400,0,2));
+    	backgrounds.add(new Background(800,0,3));
+    	backgrounds.add(new Background(1200,0,4));    	
+    	backgrounds.add(new Background(1600,0,5));
+    	backgrounds.add(new Background(2000,0,6));
+    	backgrounds.add(new Background(2400,0,7));
+    	backgrounds.add(new Background(2800,0,8));
     	
     	
  
@@ -639,12 +643,16 @@ public class GameplayState extends BasicGameState{
     		{
     			backgrounds.remove(backgrounds.get(i));
     		}
-    		if(backgrounds.get(i).posX == -2400)
+    		if(backgrounds.get(i).posX == -2400 && backgrounds.get(i).tile == 1)
     		{
-    			backgrounds.add(new Background(800,0,1));
-    			backgrounds.add(new Background(1600,0,2));
-    			backgrounds.add(new Background(2400,0,3));
-    			backgrounds.add(new Background(3200,0,4));
+    	    	backgrounds.add(new Background(800,0,1));
+    	    	backgrounds.add(new Background(1200,0,2));
+    	    	backgrounds.add(new Background(1600,0,3));
+    	    	backgrounds.add(new Background(2000,0,4));    	
+    	    	backgrounds.add(new Background(2400,0,5));
+    	    	backgrounds.add(new Background(2800,0,6));
+    	    	backgrounds.add(new Background(3200,0,7));
+    	    	backgrounds.add(new Background(3600,0,8));
     		}
 
     	}
