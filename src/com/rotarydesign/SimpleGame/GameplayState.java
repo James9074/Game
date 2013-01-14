@@ -177,7 +177,8 @@ public class GameplayState extends BasicGameState{
     	music = new Music("assets/bgmusic.wav");
     	smoke = new Sound("assets/smoke.wav");
     	
-    	backgrounds.add(new Background(0,0));
+    	backgrounds.add(new Background(0,0,1));
+    	backgrounds.add(new Background(1600,0,2));
     	
     	
  
@@ -638,7 +639,8 @@ public class GameplayState extends BasicGameState{
     		}
     		if(backgrounds.get(i).posX == -2400)
     		{
-    			backgrounds.add(new Background(800,0));
+    			backgrounds.add(new Background(800,0,1));
+    			backgrounds.add(new Background(2400,0,2));
     		}
 
     	}

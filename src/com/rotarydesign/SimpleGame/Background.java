@@ -7,11 +7,13 @@ public class Background {
 	public Image background;
 	int posX;
 	int posY;
+	int tile;
 
-	public Background(int x,int y) throws SlickException  {
-		background = new Image("assets/background_space.png");
+	public Background(int x,int y, int tileNumber) throws SlickException  {
+		background = new Image("assets/background_space"+tileNumber+".jpg");
 		posY = y;
 		posX = x;
+		tile = tileNumber;
 	}
 	
 	public void update(){
