@@ -28,6 +28,7 @@ public class SimpleGame extends StateBasedGame {
          app.setDisplayMode(800, 400, false);
         // app.setVSync(true);
          app.setTargetFrameRate(60);
+         app.setIcon("assets/icon32.png");
          app.start();
     }
  
