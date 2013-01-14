@@ -8,7 +8,7 @@ public class Powerup {
 	public Image powerupGraphic;
 	int posX;
 	int posY;
-	int randomDirection = 0;
+	float randomDirection = 0;
 	int timePassed = 0;
 	int health = 20;
 	
@@ -32,7 +32,8 @@ public Powerup() throws SlickException  {
 
 public void update() throws SlickException{
 	java.util.Random random = new java.util.Random();
-	posX -= 3;
+	posX -= (3f/16f) * GameplayState.deltaTime;
+	System.out.println(posX);
 	if(timePassed > 500)
 	{
 		randomDirection += -1 + random.nextInt(3);

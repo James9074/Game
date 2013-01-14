@@ -8,9 +8,10 @@ public class Enemy {
 	public Image enemyGraphic;
 	int posX;
 	int posY;
-	int randomDirection = 0;
+	float randomDirection = 0;
 	int timePassed = 0;
 	int health = 20;
+	float updateInterval = 0;
 	
 
 	public Rectangle enemyPoly;
@@ -31,14 +32,16 @@ public Enemy() throws SlickException  {
 
 public void update() throws SlickException{
 	java.util.Random random = new java.util.Random();
-	posX -= 3;
+	
 	if(timePassed > 500)
 	{
 		randomDirection += -1 + random.nextInt(3);
 		timePassed = 0;
 		GameplayState.enemyBullets.add(new Bullet(posX-3,posY+7,1,5));
 	}
-	posY += randomDirection;
+	
+	
+	posY += (randomDirection/16) * GameplayState.deltaTime;
 	if(posY > 390)
 	{
 		randomDirection = -1;
@@ -47,6 +50,8 @@ public void update() throws SlickException{
 	{
 		randomDirection = 1;
 	}	
+	posX -= updateInterval * .1875;
+	
 	enemyPoly.setX(posX);
 	enemyPoly.setY(posY);
 	

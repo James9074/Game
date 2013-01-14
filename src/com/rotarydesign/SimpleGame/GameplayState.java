@@ -96,6 +96,7 @@ public class GameplayState extends BasicGameState{
 	int enemiesPassed = 0;
 	int playerBulletDamage = 20;
 	int timer;
+	static float deltaTime = 0;
 	
 	 
  
@@ -347,7 +348,7 @@ public class GameplayState extends BasicGameState{
     	    	{
     	    		timer += delta;
     	    		  	    		
-    	    		System.out.println(timer / 1000);
+    	    		System.out.println(delta);
     	    		if(timer > 5000)
     	    		{
     	    			powerupShield = false;
@@ -602,6 +603,8 @@ public class GameplayState extends BasicGameState{
     	{
     		
     		enemies.get(i).timePassed += delta *.5f;
+    		enemies.get(i).updateInterval = delta;
+
     		//System.out.println(playing);
     		
     	//	enemies.get(i).enemyPoly.draw(enemies.get(i).enemyPoly);
@@ -609,6 +612,9 @@ public class GameplayState extends BasicGameState{
     		
         	//	powerups.get(i).powerupPoly.draw(powerups.get(i).powerupPoly);
     	}
+    	
+    	deltaTime = delta;
+
 
         //---------END-------------
     	

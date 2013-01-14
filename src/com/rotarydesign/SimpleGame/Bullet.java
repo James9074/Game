@@ -9,6 +9,7 @@ public class Bullet{
 	int posX;
 	int posY;
 	int damage;
+	float delta;
 	
 	public Rectangle bulletPoly;
 
@@ -28,7 +29,9 @@ public class Bullet{
 	}
 	
 	public void update(int speed){
-		posX += speed;
+		float bulletSpeed = 0;
+		bulletSpeed = (speed/16f) * GameplayState.deltaTime;
+		posX += bulletSpeed;
 		bulletPoly.setX(posX);
 		if(posX > 300)
 		{
