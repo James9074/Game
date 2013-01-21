@@ -33,7 +33,7 @@ public Powerup() throws SlickException  {
 public void update() throws SlickException{
 	java.util.Random random = new java.util.Random();
 	posX -= (3f/16f) * GameplayState.deltaTime;
-	System.out.println(posX);
+	//System.out.println(posX);
 	if(timePassed > 500)
 	{
 		randomDirection += -1 + random.nextInt(3);

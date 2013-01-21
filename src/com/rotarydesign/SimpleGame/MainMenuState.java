@@ -17,6 +17,7 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 public class MainMenuState extends BasicGameState {
  
     int stateID = 0;
+    static int levelSelect = 1;
     Sound fx = null;
     boolean insideStartGame = false;
     boolean insideExit = false;
@@ -51,6 +52,7 @@ public class MainMenuState extends BasicGameState {
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
     	background.draw(0,0);
     	g.drawString("Controls:\nWASD - Movement\nLeft Control - Slow Ship\nSpace Or Left Click - Fire\n\n\nClick To Begin\n\nEscape To Exit",330,100);
+    	g.drawString("Level: " + levelSelect, 330, 300);
     }
  
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
@@ -64,6 +66,7 @@ public class MainMenuState extends BasicGameState {
     		//GameplayState.music.loop(1f,.3f);
     		GameplayState.needReset = true;
     		GameplayState.playing = false;
+    		GameplayState.level = levelSelect;
     		//GameplayState.health = 100;
     		sbg.enterState(SimpleGame.GAMEPLAYSTATE, new FadeOutTransition(Color.black), null);
     		
@@ -72,6 +75,14 @@ public class MainMenuState extends BasicGameState {
     	if (input.isKeyPressed(Input.KEY_ESCAPE))
     	{
     		gc.exit();
+    	}
+    	if (input.isKeyPressed(Input.KEY_LEFT))
+    	{
+    		levelSelect -= 1;
+    	}
+    	if (input.isKeyPressed(Input.KEY_RIGHT))
+    	{
+    		levelSelect += 1;
     	}
     }
  

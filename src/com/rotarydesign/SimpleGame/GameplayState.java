@@ -70,11 +70,12 @@ public class GameplayState extends BasicGameState{
 	Image shield = null;
 	Sound laser = null;
 	Sound smoke = null;
+	Level levelState = null;
 	ArrayList <Bullet> bullets = new ArrayList <Bullet>();
 	static ArrayList <Powerup> powerups = new ArrayList <Powerup>();
 	static ArrayList <Bullet> enemyBullets = new ArrayList <Bullet>();
 	ArrayList <Enemy> enemies = new ArrayList <Enemy>();
-	ArrayList <Background> backgrounds = new ArrayList <Background>();
+	static ArrayList <Background> backgrounds = new ArrayList <Background>();
 	public Music music = null;
 	int x = 0;
 	int y = 100;
@@ -84,6 +85,7 @@ public class GameplayState extends BasicGameState{
 	int spawnInterval = 0;
 	int landX = 0;
 	int score = 0;
+	static int level = 1;
 	int bulletRecharge = 0;
 	int bulletPassing = 0;
 	static boolean playing = true;
@@ -97,6 +99,11 @@ public class GameplayState extends BasicGameState{
 	int playerBulletDamage = 20;
 	int timer;
 	static float deltaTime = 0;
+	int lastPowerupSpawn = 0;
+	int powerupSpawnInterval = 0;
+	float deltaAdd = 0;
+	float deltaNumber = 0;
+	float deltaAverage = 0;
 	
 	 
  
@@ -121,6 +128,7 @@ public class GameplayState extends BasicGameState{
      	spawnInterval = 0;
      	landX = 0;
      	score = 0;
+     	level = MainMenuState.levelSelect;
      	bulletRecharge = 0;
      	bulletPassing = 0;
      	playing = true;
@@ -134,6 +142,9 @@ public class GameplayState extends BasicGameState{
      	needReset = false;
      	enemiesPassed = 0;
      	playerBulletDamage = 20;
+     	
+     	levelState.update(level);
+     	
 	}
     public void init(GameContainer gc, StateBasedGame sbg) 
 			throws SlickException {
@@ -171,21 +182,25 @@ public class GameplayState extends BasicGameState{
 		
 		healthBar = new Bar(400,5);
 		chargeBar = new Bar(600,5);
-    	
+		levelState = new Level(level);
+
+     	levelState.update(level);
+		
+		
     	laser = new Sound("assets/laser.wav");
     	bullet = new Image("assets/bullet.jpg");
     	//bulletGeneration = new BulletGeneration();
     	music = new Music("assets/bgmusic.wav");
     	smoke = new Sound("assets/smoke.wav");
     	
-    	backgrounds.add(new Background(0,0,1));
-    	backgrounds.add(new Background(400,0,2));
-    	backgrounds.add(new Background(800,0,3));
-    	backgrounds.add(new Background(1200,0,4));    	
-    	backgrounds.add(new Background(1600,0,5));
-    	backgrounds.add(new Background(2000,0,6));
-    	backgrounds.add(new Background(2400,0,7));
-    	backgrounds.add(new Background(2800,0,8));
+    	backgrounds.add(new Background(0,0,levelState.level,1));
+    	backgrounds.add(new Background(400,0,levelState.level,2));
+    	backgrounds.add(new Background(800,0,levelState.level,3));
+    	backgrounds.add(new Background(1200,0,levelState.level,4));    	
+    	backgrounds.add(new Background(1600,0,levelState.level,5));
+    	backgrounds.add(new Background(2000,0,levelState.level,6));
+    	backgrounds.add(new Background(2400,0,levelState.level,7));
+    	backgrounds.add(new Background(2800,0,levelState.level,8));
     	
     	
  
@@ -195,6 +210,17 @@ public class GameplayState extends BasicGameState{
     public void update(GameContainer gc, StateBasedGame sbg, int delta) 
 			throws SlickException     
     {
+    	
+    	if(deltaNumber < 20)
+    	{
+    		deltaAdd += delta;
+    		deltaNumber += 1;
+    	}
+    	else
+    	{
+    		deltaAverage = deltaAdd/20;
+    	}
+    	
     	
     	if(needReset)
     	{
@@ -348,7 +374,7 @@ public class GameplayState extends BasicGameState{
     	    	{
     	    		timer += delta;
     	    		  	    		
-    	    		System.out.println(delta);
+    	    		//System.out.println(delta);
     	    		if(timer > 5000)
     	    		{
     	    			powerupShield = false;
@@ -385,12 +411,22 @@ public class GameplayState extends BasicGameState{
 		//Plane/Bullet Collide end
     		
     	//collision end	----------------------
+    	
+    	//reset enemy spawn rate
     	if(lastSpawn == 0)
     	{
         	java.util.Random random = new java.util.Random();
-    		spawnInterval = 500+random.nextInt(2000);
+    		spawnInterval = 500+random.nextInt(100);
     	}
     	lastSpawn += delta;
+    	
+    	//Reset powerup random spawn
+    	if(lastPowerupSpawn == 0)
+    	{
+        	java.util.Random random = new java.util.Random();
+    		powerupSpawnInterval = 5000+random.nextInt(15000);
+    	}
+    	lastPowerupSpawn += delta;
 
     	//HealthBars
     	if(health <= 0)
@@ -426,9 +462,13 @@ public class GameplayState extends BasicGameState{
     	//HealthBars End
     	if(lastSpawn > spawnInterval){
         enemies.add(new Enemy());
-        powerups.add(new Powerup());
         lastSpawn = 0;
         }
+    	if(lastPowerupSpawn > powerupSpawnInterval){
+            
+            powerups.add(new Powerup());
+            lastPowerupSpawn = 0;
+            }
     	
     	float move = .001f * delta;
         x-= move;
@@ -506,19 +546,31 @@ public class GameplayState extends BasicGameState{
         if((input.isKeyDown(Input.KEY_SPACE) ||  input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) && playing)
         {
             //float hip = 0.4f * delta;
+        	/*  ===================DEBUG==============================
+        	    If FPS drops, how does it effect delta related effects
+        	    ==================/DEBUG==============================
+        	if(delta < 10)
+        	{
+        	System.out.println("BulletPassing: " +bulletPassing);
+        	System.out.println("Delta Average: "+deltaAverage);
+        	System.out.println("Delta: "+delta);
+        	}
         	
-        	if(bulletPassing < (200/16) * delta*.5f && cooldown == false){
+        	*/
+        	if(bulletPassing < (200/16) * deltaAverage && cooldown == false){
         	if(lastFire > 80){
         	bullets.add(new Bullet(x+112,y+26,2,20));
             laser.play(1f,.3f);
             lastFire = 0; 
             bulletRecharge++;
-            bulletPassing += delta *.5f;
+            bulletPassing += deltaAverage *.5f;
         	}
         	}
         	else
 			{
         		cooldown = true;
+
+            	System.out.println("OVERLOAD");
         		if(bulletPassing > 0)
         		{
         			bulletPassing -= delta * .05f;
@@ -651,14 +703,14 @@ public class GameplayState extends BasicGameState{
     		}
     		if(backgrounds.get(i).posX == -2400 && backgrounds.get(i).tile == 1)
     		{
-    	    	backgrounds.add(new Background(800,0,1));
-    	    	backgrounds.add(new Background(1200,0,2));
-    	    	backgrounds.add(new Background(1600,0,3));
-    	    	backgrounds.add(new Background(2000,0,4));    	
-    	    	backgrounds.add(new Background(2400,0,5));
-    	    	backgrounds.add(new Background(2800,0,6));
-    	    	backgrounds.add(new Background(3200,0,7));
-    	    	backgrounds.add(new Background(3600,0,8));
+    	    	backgrounds.add(new Background(800,0,levelState.level,1));
+    	    	backgrounds.add(new Background(1200,0,levelState.level,2));
+    	    	backgrounds.add(new Background(1600,0,levelState.level,3));
+    	    	backgrounds.add(new Background(2000,0,levelState.level,4));    	
+    	    	backgrounds.add(new Background(2400,0,levelState.level,5));
+    	    	backgrounds.add(new Background(2800,0,levelState.level,6));
+    	    	backgrounds.add(new Background(3200,0,levelState.level,7));
+    	    	backgrounds.add(new Background(3600,0,levelState.level,8));
     		}
 
     	}
@@ -713,7 +765,7 @@ public class GameplayState extends BasicGameState{
     	//	enemies.get(i).enemyPoly.draw(enemies.get(i).enemyPoly);
     	//  g.draw(enemies.get(i).enemyPoly);   // --- DRAW HITBOX
     	//	g.draw(planePoly);                    // HITBOX DRAW
-
+    		System.out.println(level);
     	}
     	
     	
