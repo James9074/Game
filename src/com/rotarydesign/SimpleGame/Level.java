@@ -2,6 +2,8 @@ package com.rotarydesign.SimpleGame;
 
 import java.util.ArrayList;
 
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 public class Level {
@@ -18,10 +20,12 @@ public class Level {
 	if(level == 1){
 		area = "space";
 		level = 1;
+		GameplayState.textColor = Color.white;
 	}
 	if(level == 2){
-		area = "stars";
+		area = "sky";
 		level = 2;
+		GameplayState.textColor = Color.black;
 	}
 	else{
 		area = "stars";

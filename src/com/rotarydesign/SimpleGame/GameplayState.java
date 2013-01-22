@@ -15,6 +15,7 @@ import java.util.*;
 
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Polygon;
+import org.newdawn.slick.geom.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
@@ -35,6 +36,7 @@ public class GameplayState extends BasicGameState{
 	@Override
     public void enter(GameContainer gc, StateBasedGame sb) throws SlickException
     {
+		//gc.setShowFPS(false); 
         super.enter(gc, sb);
         gc.setAlwaysRender(true);
         
@@ -66,6 +68,7 @@ public class GameplayState extends BasicGameState{
 	Bar chargeBar = null;
 	Polygon planePoly;
 	Ellipse planeShield;
+	Rectangle gameOverBox;
 	Image bullet = null;
 	Image shield = null;
 	Sound laser = null;
@@ -104,6 +107,8 @@ public class GameplayState extends BasicGameState{
 	float deltaAdd = 0;
 	float deltaNumber = 0;
 	float deltaAverage = 0;
+	static Color textColor = null;
+	Color gameOverBoxColor = null;
 	
 	 
  
@@ -142,6 +147,7 @@ public class GameplayState extends BasicGameState{
      	needReset = false;
      	enemiesPassed = 0;
      	playerBulletDamage = 20;
+     	textColor = null;
      	
      	levelState.update(level);
      	
@@ -178,14 +184,17 @@ public class GameplayState extends BasicGameState{
 		
 		shield = new Image("assets/shield.png");
 		
+		textColor = new Color(22f,22f,22f,.5f);
+		gameOverBoxColor = new Color(0f,0f,0f,.2f);
+     	//Image.setColor(1,50f,50f,50f);
+     	
 		planeShield = new Ellipse(x+56.5f,y+19f,90f,44f);
-		
+		gameOverBox = new Rectangle(332,170,125,70);		
 		healthBar = new Bar(400,5);
 		chargeBar = new Bar(600,5);
 		levelState = new Level(level);
 
      	levelState.update(level);
-		
 		
     	laser = new Sound("assets/laser.wav");
     	bullet = new Image("assets/bullet.jpg");
@@ -570,7 +579,7 @@ public class GameplayState extends BasicGameState{
 			{
         		cooldown = true;
 
-            	System.out.println("OVERLOAD");
+            	//System.out.println("OVERLOAD");
         		if(bulletPassing > 0)
         		{
         			bulletPassing -= delta * .05f;
@@ -684,6 +693,7 @@ public class GameplayState extends BasicGameState{
     public void render(GameContainer gc, StateBasedGame sbg ,Graphics g) 
 			throws SlickException 
     {
+g.setColor(textColor);
     	
     	/*//Render powerupPoly
     	for(int i = 0; i < powerups.size(); i++)
@@ -765,7 +775,7 @@ public class GameplayState extends BasicGameState{
     	//	enemies.get(i).enemyPoly.draw(enemies.get(i).enemyPoly);
     	//  g.draw(enemies.get(i).enemyPoly);   // --- DRAW HITBOX
     	//	g.draw(planePoly);                    // HITBOX DRAW
-    		System.out.println(level);
+    		//System.out.println(level);
     	}
     	
     	
@@ -793,6 +803,13 @@ public class GameplayState extends BasicGameState{
     	if(health<=0)
     	{
     		currentState = STATES.GAME_OVER_STATE;
+    		
+    		
+    		//g.gameOverBox.setAlpha(.5f);
+    		g.setColor(gameOverBoxColor);
+    		
+    		g.fill(gameOverBox);
+    		g.setColor(Color.white);
     		g.drawString("GAME OVER",350,180);
     		if(playing)
     		{
