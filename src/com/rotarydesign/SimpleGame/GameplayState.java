@@ -20,7 +20,6 @@ import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
 
-	
 
 public class GameplayState extends BasicGameState{
 	
@@ -88,7 +87,7 @@ public class GameplayState extends BasicGameState{
 	int score = 0;
 	static int level = 1;
 	int bulletRecharge = 0;
-	int bulletPassing = 0;
+	float bulletPassing = 0;
 	static boolean playing = true;
 	static int health = 100;
 	float hip = 0 ;
@@ -218,14 +217,15 @@ public class GameplayState extends BasicGameState{
 			throws SlickException     
     {
     	
-    	if(deltaNumber < 20)
+    	if(deltaNumber < 30)
     	{
     		deltaAdd += delta;
     		deltaNumber += 1;
     	}
     	else
     	{
-    		deltaAverage = deltaAdd/20;
+    		deltaAverage = deltaAdd/30;
+    		System.out.println(deltaAverage);
     	}
     	
     	
@@ -556,20 +556,10 @@ public class GameplayState extends BasicGameState{
        // }
         if((input.isKeyDown(Input.KEY_SPACE) ||  input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) && playing)
         {
-            //float hip = 0.4f * delta;
-        	/*  ===================DEBUG==============================
-        	    If FPS drops, how does it effect delta related effects
-        	    ==================/DEBUG==============================
-        	if(delta < 10)
-        	{
-        	System.out.println("BulletPassing: " +bulletPassing);
-        	System.out.println("Delta Average: "+deltaAverage);
-        	System.out.println("Delta: "+delta);
-        	}
-        	
-        	*/
-        	if(bulletPassing < (200/16) * deltaAverage && cooldown == false){
+            if(bulletPassing < (200/16) * deltaAverage && cooldown == false){
         	if(lastFire > 80){
+        		
+        		
         	bullets.add(new Bullet(x+112,y+26,2,20));
             laser.play(1f,.3f);
             lastFire = 0; 
@@ -580,11 +570,13 @@ public class GameplayState extends BasicGameState{
         	else
 			{
         		cooldown = true;
-
+        		if(bulletPassing > (200/16) * deltaAverage){
+        			bulletPassing = (200/16) * deltaAverage;
+        		}
             	//System.out.println("OVERLOAD");
         		if(bulletPassing > 0)
         		{
-        			bulletPassing -= delta * .05f;
+        			bulletPassing -= (200/16) * deltaAverage * .05f;
         			
         		}
 				
@@ -618,24 +610,20 @@ public class GameplayState extends BasicGameState{
     			powerupShield = true;
     		}
     	}
-        //--------------------------
 
-    	healthBar.update();
-    	chargeBar.update();
-        //---------------------------
-    	if(bulletPassing >= 160)
+    	if(bulletPassing >= (160/16) * deltaAverage)
     	{
     		chargeBar.bars = 5;
     	}
-    	else if(bulletPassing > 120)
+    	else if(bulletPassing > (120/16) * deltaAverage)
     	{
     		chargeBar.bars = 4;
     	}
-    	else if(bulletPassing > 80)
+    	else if(bulletPassing > (80/16) * deltaAverage)
     	{
     		chargeBar.bars = 3;
     	}
-    	else if(bulletPassing > 40)
+    	else if(bulletPassing > (40/16) * deltaAverage)
     	{
     		chargeBar.bars = 2;
     	}
@@ -658,7 +646,11 @@ public class GameplayState extends BasicGameState{
 			music.stop();
 		}
     	
-    	
+        //--------------------------
+
+    	healthBar.update();
+    	chargeBar.update();
+        //---------------------------
 	
 		
         //---------------------------
@@ -827,7 +819,7 @@ public class GameplayState extends BasicGameState{
     	//Draw Charge Bar
     	chargeBar.barOutlinePoly.draw(400,7);
     	
-    	//gtSystem.out.println("BulletPassing: " +bulletPassing);
+    	//System.out.println("BulletPassing: " +bulletPassing);
     	//Draw Overload Or Heat Text
     	if(cooldown)
     	{
@@ -864,6 +856,14 @@ public class GameplayState extends BasicGameState{
         	}
     	}    	
     	/*------------------RENDER HUD END-------------------------------*/	
+    	
+    	/*---------------------------DEBUG-------------------------------*/
+    	
+	    	//If FPS drops, how does it effect delta related effects
+    		//System.out.println("BulletPassing: " + bulletPassing);
+    		//System.out.println("Delta Average: " + deltaAverage);
+	
+    	/*-------------------------DEBUG END-----------------------------*/
     }
     
 }
