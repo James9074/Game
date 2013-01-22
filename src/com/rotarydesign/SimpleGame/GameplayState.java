@@ -10,8 +10,6 @@ import org.newdawn.slick.Sound;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import java.util.ArrayList;
-import java.io.*;
-import java.util.*;
 
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Polygon;
@@ -155,7 +153,7 @@ public class GameplayState extends BasicGameState{
     public void init(GameContainer gc, StateBasedGame sbg) 
 			throws SlickException {
     	
-    	File filename = new File("C:/levels/level01.txt");
+    	//File filename = new File("C:/levels/level01.txt");
     	//FileReader fw = new FileReader(filename);
     	/*FileReader reader;
     	//Scanner in = new Scanner(new FileReader("levels/level01.txt"));
@@ -264,6 +262,10 @@ public class GameplayState extends BasicGameState{
             	 currentState = STATES.START_GAME_STATE;
                 // sbg.enterState(SimpleGame.MAINMENUSTATE);
                  break;
+             default:
+            	 currentState = STATES.INITIALIZE;
+                  break;
+            
          }
 
     	Input input = gc.getInput();
@@ -693,15 +695,15 @@ public class GameplayState extends BasicGameState{
     public void render(GameContainer gc, StateBasedGame sbg ,Graphics g) 
 			throws SlickException 
     {
-g.setColor(textColor);
     	
-    	/*//Render powerupPoly
-    	for(int i = 0; i < powerups.size(); i++)
-    	{
-        		g.draw(powerups.get(i).powerupPoly);
-    	}
-    	//Render end*/
+    	/*-------------------------INIT------------------------------*/
+    	g.setColor(textColor);
+    	/*-----------------------INIT END----------------------------*/
 
+    	
+
+    	
+		/*------------------RENDER BACKGROUND------------------------*/	
     	for(int i = 0; i < backgrounds.size(); i++)
     	{
     		//backgrounds.get(i).posX-=1;
@@ -722,8 +724,13 @@ g.setColor(textColor);
     	    	backgrounds.add(new Background(3200,0,levelState.level,7));
     	    	backgrounds.add(new Background(3600,0,levelState.level,8));
     		}
-
     	}
+    	/*------------------RENDER BACKGROUND END--------------------*/	
+    	
+    	
+    	
+    	
+    	/*------------------RENDER PLAYER BULLETS--------------------*/	
     	for(int i = 0; i < bullets.size(); i++)
     	{
     		bullets.get(i).bulletGraphic.draw(bullets.get(i).posX ,bullets.get(i).posY);
@@ -733,6 +740,12 @@ g.setColor(textColor);
     			bullets.remove(bullets.get(i));
     		}
     	}
+    	/*------------------RENDER PLAYER BULLETS END-----------------*/	
+    	
+    	
+    	
+    	
+    	/*------------------RENDER ENEMY BULLETS----------------------*/	
     	for(int i = 0; i < enemyBullets.size(); i++)
     	{
     		enemyBullets.get(i).bulletGraphic.draw(enemyBullets.get(i).posX ,enemyBullets.get(i).posY);
@@ -742,7 +755,12 @@ g.setColor(textColor);
     			enemyBullets.remove(enemyBullets.get(i));
     		}
     	}
+    	/*------------------RENDER ENEMY BULLETS END-------------------*/	
     	
+    	
+    	
+    	
+    	/*------------------RENDER POWERUPS----------------------------*/	
     	for(int i = 0; i < powerups.size(); i++)
     	{
     		powerups.get(i).powerupGraphic.draw(powerups.get(i).posX ,powerups.get(i).posY);
@@ -750,13 +768,17 @@ g.setColor(textColor);
     		if(powerups.get(i).posX < -20)
     		{
     			powerups.remove(powerups.get(i));
-    			if(health > 0)
-    			{
-    				//enemiesPassed += 1;
-    			}
-    			
     		}
+    		
+    		//--Debug
+    		// g.draw(powerups.get(i).powerupPoly);   // --- Render powerupPoly
     	}
+    	/*------------------RENDER POWERUPS END-----------------------*/	    	
+
+    	
+    	
+    	
+    	/*------------------RENDER ENEMIES----------------------------*/
     	
     	for(int i = 0; i < enemies.size(); i++)
     	{
@@ -769,27 +791,44 @@ g.setColor(textColor);
     			{
     				enemiesPassed += 1;
     			}
-    			
     		}
-    		
-    	//	enemies.get(i).enemyPoly.draw(enemies.get(i).enemyPoly);
-    	//  g.draw(enemies.get(i).enemyPoly);   // --- DRAW HITBOX
-    	//	g.draw(planePoly);                    // HITBOX DRAW
-    		//System.out.println(level);
+    	//--Debugging 
+    	//  g.draw(enemies.get(i).enemyPoly);     // --- DRAW HITBOX
     	}
-    	
-    	
-    	
+    	/*------------------RENDER ENEMIES END------------------------*/
 
-
+    	
+    	
+    	
+    	/*------------------RENDER PLAYER-----------------------------*/
+    	
     	plane.draw(x,y,scale);
 		 if(powerupShield){
-			 //g.draw(planeShield); //Shield hitbox
+			 
 			 shield.draw(x-30,y-23);
 		 }
-    	//Text now
+		 //--Debugging
+		 //	 g.draw(planePoly);                    // DRAW PLAYER HITBOX
+		 //  g.draw(planeShield);                  // DRAW SHIELD HITBOX
+    	/*------------------RENDER PLAYER END-------------------------*/
+
+		 
+		 
+		 
+    	/*------------------RENDER HUD--------------------------------*/
+    	
+    	//Draw Score
     	g.drawString("Score: " + score,200,10);
-    	//g.drawString("Charge: " + bulletPassing,400,40);
+    	
+    	
+    	//Draw Health Bar
+    	healthBar.barOutlinePoly.draw(600,7);
+    	
+    	//Draw Charge Bar
+    	chargeBar.barOutlinePoly.draw(400,7);
+    	
+    	//gtSystem.out.println("BulletPassing: " +bulletPassing);
+    	//Draw Overload Or Heat Text
     	if(cooldown)
     	{
     		g.drawString("OVERLOAD!",400,40);
@@ -800,43 +839,31 @@ g.setColor(textColor);
     	}
     	g.drawString("Health: " + health,600,40);
     	g.drawString("Pass: " + enemiesPassed,600,80);
+    	
+    	//=====UPON GAME OVER========
+    	//Draw Game Over Box
     	if(health<=0)
     	{
-    		currentState = STATES.GAME_OVER_STATE;
-    		
-    		
-    		//g.gameOverBox.setAlpha(.5f);
+    		currentState = STATES.GAME_OVER_STATE; //Change State to Game Over
+    		//Set color for game over box, then change it back to text color
     		g.setColor(gameOverBoxColor);
-    		
     		g.fill(gameOverBox);
     		g.setColor(Color.white);
-    		g.drawString("GAME OVER",350,180);
+    		g.drawString("GAME OVER",350,180);	
+    		//Upon death, play end sound and stop playing
     		if(playing)
-    		{
-    			
-    		smoke.play();
-    		music.stop();
-    		playing = false;
-    		//currentState = STATES.GAME_OVER_STATE;
-    		//currentState = STATES.START_GAME_STATE;
+    		{	
+    			smoke.play();
+    			music.stop();
+    			playing = false;
     		}
-    		
+    		//After half a second, draw "Press Escape"
     		if(endTimer > 500)
         	{
         		g.drawString("Press Escape", 340, 200);
-        		
         	}
-    		//Game pause until enter somehow
-    	}
-    	healthBar.barOutlinePoly.draw(600,7);
-    	chargeBar.barOutlinePoly.draw(400,7);
-    	
-    	//g.draw(chargeBar.barOutlinePoly);
+    	}    	
+    	/*------------------RENDER HUD END-------------------------------*/	
     }
     
-   
-
-  
-    
-
 }

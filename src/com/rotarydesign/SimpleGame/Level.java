@@ -1,18 +1,15 @@
 package com.rotarydesign.SimpleGame;
 
-import java.util.ArrayList;
-
 import org.newdawn.slick.Color;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 public class Level {
 	int level = 1;
 	String area = "space";
+	
+	
 	public Level(int levelInit) throws SlickException{
 	level = levelInit;
-	
-	
 	}
 	
 	public void update(int levelUpdate){
@@ -44,7 +41,6 @@ public class Level {
 	}
 	public void level3(){
 	level = 3;
-	ArrayList<Background> backgrounds = GameplayState.backgrounds;
 	
 	}
 }

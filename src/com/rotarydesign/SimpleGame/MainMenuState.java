@@ -9,8 +9,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.state.transition.CrossStateTransition;
-import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
 
@@ -51,14 +49,15 @@ public class MainMenuState extends BasicGameState {
  
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
     	background.draw(0,0);
+    	g.setColor(Color.white);
     	g.drawString("Controls:\nWASD - Movement\nLeft Control - Slow Ship\nSpace Or Left Click - Fire\n\n\nClick To Begin\n\nEscape To Exit",330,100);
     	g.drawString("Level: " + levelSelect, 330, 300);
     }
  
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
     	Input input = gc.getInput();
-    	int mouseX = input.getMouseX();
-    	int mouseY = input.getMouseY();
+    	//int mouseX = input.getMouseX();
+    	//int mouseY = input.getMouseY();
     	
     	if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
     		
@@ -76,13 +75,19 @@ public class MainMenuState extends BasicGameState {
     	{
     		gc.exit();
     	}
+    	
+    	//Level Select
     	if (input.isKeyPressed(Input.KEY_LEFT))
     	{
+    		if(levelSelect > 1){
     		levelSelect -= 1;
+    		}
     	}
     	if (input.isKeyPressed(Input.KEY_RIGHT))
     	{
+    		if(levelSelect < 2){
     		levelSelect += 1;
+    		}
     	}
     }
  
