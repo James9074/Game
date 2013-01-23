@@ -44,7 +44,7 @@ public class MainMenuState extends BasicGameState {
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
     	background = new Image("assets/menu.jpg");
     	
-    
+    	gc.setShowFPS(false); 
     }
  
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {

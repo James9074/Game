@@ -22,7 +22,7 @@ public class Level {
 	if(level == 2){
 		area = "sky";
 		level = 2;
-		GameplayState.textColor = Color.black;
+		GameplayState.textColor = Color.white;
 	}
 	else{
 		area = "stars";

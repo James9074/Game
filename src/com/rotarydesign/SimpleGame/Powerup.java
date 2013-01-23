@@ -20,7 +20,7 @@ public class Powerup {
 public Powerup() throws SlickException  {
 	powerupGraphic = new Image("assets/shieldPowerup.png");
 	java.util.Random random = new java.util.Random();
-	posY = 10 + random.nextInt(200);
+	posY = 40 + random.nextInt(350);
 	posX = 800; //1200
 	powerupPoly = new Rectangle( posX,
             posY,
@@ -31,24 +31,7 @@ public Powerup() throws SlickException  {
 
 
 public void update() throws SlickException{
-	java.util.Random random = new java.util.Random();
-	posX -= (3f/16f) * GameplayState.deltaTime;
-	//System.out.println(posX);
-	if(timePassed > 500)
-	{
-		randomDirection += -1 + random.nextInt(3);
-		timePassed = 0;
-		//GameplayState.powerups.add(new Powerup(posX-3,posY+7,1,5));
-	}
-	posY += randomDirection;
-	if(posY > 390)
-	{
-		randomDirection = -1;
-	}
-	if(posY < 10)
-	{
-		randomDirection = 1;
-	}	
+	posX -= (1f/16f) * GameplayState.deltaAverage;
 	powerupPoly.setX(posX);
 	powerupPoly.setY(posY);
 	

@@ -1,0 +1,75 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (malloc) failed to allocate 32744 bytes for ChunkPool::allocate
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   In 32 bit mode, the process size limit was hit
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Use 64 bit Java on a 64 bit OS
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (allocation.cpp:222), pid=4920, tid=5800
+#
+# JRE version: 7.0_07-b11
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (23.3-b01 mixed mode windows-amd64 compressed oops)
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0000000008dc0000):  JavaThread "C2 CompilerThread0" daemon [_thread_in_native, id=5800, stack(0x000000000a380000,0x000000000a480000)]
+
+Stack: [0x000000000a380000,0x000000000a480000]
+
+Current CompileTask:
+C2:  10948  119             org.newdawn.slick.Input::poll (1561 bytes)
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x000000000b8f9800 JavaThread "LWJGL Timer" daemon [_thread_blocked, id=6052, stack(0x0000000010e40000,0x0000000010f40000)]
+  0x000000000aa23800 JavaThread "Thread-3" daemon [_thread_in_native, id=5880, stack(0x0000000010b20000,0x0000000010c20000)]
+  0x000000000a8aa800 JavaThread "Java2D Disposer" daemon [_thread_blocked, id=3548, stack(0x000000000b0c0000,0x000000000b1c0000)]
+  0x0000000008dc8800 JavaThread "Service Thread" daemon [_thread_blocked, id=2616, stack(0x000000000a580000,0x000000000a680000)]
+  0x0000000008dc1800 JavaThread "C2 CompilerThread1" daemon [_thread_blocked, id=5864, stack(0x000000000a480000,0x000000000a580000)]
+=>0x0000000008dc0000 JavaThread "C2 CompilerThread0" daemon [_thread_in_native, id=5800, stack(0x000000000a380000,0x000000000a480000)]
+  0x0000000008dbd000 JavaThread "Attach Listener" daemon [_thread_blocked, id=5900, stack(0x000000000a280000,0x000000000a380000)]
+  0x0000000008db1800 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=3288, stack(0x000000000a180000,0x000000000a280000)]
+  0x0000000008d55000 JavaThread "Finalizer" daemon [_thread_blocked, id=5264, stack(0x000000000a080000,0x000000000a180000)]
+  0x0000000008d4c000 JavaThread "Reference Handler" daemon [_thread_blocked, id=916, stack(0x0000000009f80000,0x000000000a080000)]
+  0x00000000026dd800 JavaThread "main" [_thread_in_native, id=5648, stack(0x00000000027b0000,0x00000000028b0000)]
+
+Other Threads:
+  0x0000000008d42800 VMThread [stack: 0x0000000009e80000,0x0000000009f80000] [id=5384]
+  0x0000000008dd9000 WatcherThread [stack: 0x000000000a680000,0x000000000a780000] [id=1520]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap
+ PSYoungGen      total 35584K, used 5748K [0x00000000eaab0000, 0x00000000efc70000, 0x0000000100000000)
+  eden space 32896K, 12% used [0x00000000eaab0000,0x00000000eaeb7b40,0x00000000ecad0000)
+  from space 2688K, 60% used [0x00000000ecad0000,0x00000000ecc65878,0x00000000ecd70000)
+  to   space 8960K, 0% used [0x00000000ef3b0000,0x00000000ef3b0000,0x00000000efc70000)
+ ParOldGen       total 43712K, used 6498K [0x00000000c0000000, 0x00000000c2ab0000, 0x00000000eaab0000)
+  object space 43712K, 14% used [0x00000000c0000000,0x00000000c06589c0,0x00000000c2ab0000)
+ PSPermGen       total 21248K, used 9339K [0x00000000bae00000, 0x00000000bc2c0000, 0x00000000c0000000)
+  object space 21248K, 43% used [0x00000000bae00000,0x00000000bb71ee40,0x00000000bc2c0000)
+
+Card table byte_map: [0x00000000059b0000,0x0000000005be0000] byte_map_base: 0x00000000053d9000
+
+Polling page: 0x0000000001040000
+
+Code Cache  [0x00000000029b0000, 0x0000000002c20000, 0x00000000059b0000)
+ total_blobs=614 nmethods=130 adapters=436 free_code_cache=48320Kb largest_free_block=49454144
+
+Compilation events (10 events):
