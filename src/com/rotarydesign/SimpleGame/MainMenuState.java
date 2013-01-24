@@ -50,7 +50,7 @@ public class MainMenuState extends BasicGameState {
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
     	background.draw(0,0);
     	g.setColor(Color.white);
-    	g.drawString("Controls:\nWASD - Movement\nLeft Control - Slow Ship\nSpace Or Left Click - Fire\n\n\nClick To Begin\n\nEscape To Exit",330,100);
+    	g.drawString("Controls:\nWASD - Movement\nLeft SHIFT - Slow Ship\nSpace Or Left Click - Fire\n\n\nClick To Begin\n\nEscape To Exit",330,100);
     	g.drawString("Level: " + levelSelect, 330, 300);
     }
  

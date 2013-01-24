@@ -11,8 +11,7 @@ import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import java.util.ArrayList;
 
-import org.newdawn.slick.geom.Ellipse;
-import org.newdawn.slick.geom.Polygon;
+import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.geom.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -66,9 +65,14 @@ public class GameplayState extends BasicGameState{
 	Polygon planePoly;
 	Ellipse planeShield;
 	Rectangle messageBox;
+	Rectangle healthMeter;
+	Rectangle chargeMeter;
+	GradientFill healthFill;
+	GradientFill chargeFill;
 	Image bullet = null;
 	Image shield = null;
 	Image hud = null;
+	Image crack = null;
 	static Sound laser = null;
 	Sound smoke = null;
 	Sound shieldOn = null;
@@ -85,7 +89,8 @@ public class GameplayState extends BasicGameState{
 	float lastFire = 0 ;
 	float lastSpawn = 0;
 	float cooldownLimit = 200;
-	int spawnInterval = 0;
+	float crackFade = 0;
+	int spawnInterval = 500;
 	int landX = 0;
 	int score = 0;
 	static int level = 1;
@@ -103,12 +108,18 @@ public class GameplayState extends BasicGameState{
 	int timer;
 	static float deltaTime = 0;
 	int lastPowerupSpawn = 0;
+	int chargeX = 160;
+	int chargeY = 33;
+	int healthX = 350;
+	int healthY = 5;
 	int powerupSpawnInterval = 0;
+	
 	float deltaAdd = 0;
 	float deltaNumber = 0;
 	static float deltaAverage = 0;
 	static Color textColor = null;
 	Color messageBoxColor = null;
+	Color healthColor = null;
 	
 	 
  
@@ -184,7 +195,9 @@ public class GameplayState extends BasicGameState{
 		});
 		
 		shield = new Image("assets/shield.png");
-		hud = new Image("assets/hud2.png");
+		hud = new Image("assets/hud.png");
+		crack = new Image("assets/crack.png");
+		crack.setAlpha(0);
 		
 		textColor = new Color(22f,22f,22f,.5f);
 		messageBoxColor = new Color(0f,0f,0f,.4f);
@@ -199,7 +212,14 @@ public class GameplayState extends BasicGameState{
      	levelState.update(level);
 		
     	laser = new Sound("assets/laser.wav");
-    	
+
+    	chargeMeter = new Rectangle(chargeX,chargeY,485*bulletPassing/((cooldownLimit/16) * deltaAverage),24);
+    	healthMeter = new Rectangle(healthX,healthY,100*health/100,20);
+    	healthColor = new Color(100,180,0);
+    	healthFill = new GradientFill(x, 0, new Color(30, 16, 14),
+                x , y+20, healthColor);
+    	chargeFill = new GradientFill(x, 0, new Color(0, 16, 114),
+                x + 485, 0, new Color(145, 34, 34));
     	bullet = new Image("assets/bullet.jpg");
     	//bulletGeneration = new BulletGeneration();
     	music = new Music("assets/bgmusic.wav");
@@ -229,8 +249,8 @@ public class GameplayState extends BasicGameState{
         
         
         /*------------------------------DETECT INPUT---------------------------*/
-        //Left Control
-        if(input.isKeyDown(Input.KEY_LCONTROL) && currentState == STATES.PLAYING)
+        //Left SHIFT
+        if(input.isKeyDown(Input.KEY_LSHIFT) && currentState == STATES.PLAYING)
         {
         	speed = 0.2f * delta;
         } 
@@ -587,15 +607,23 @@ public class GameplayState extends BasicGameState{
 	    	{
 	    		healthBar.bars = 5; 
 	    	}
+	    	
+	    	//healthColor = new Color(),(100 - (-1*(health-200))),0);
+	    	healthColor = new Color(-1*((health*2.5f)-250),(250 - (-1*((health*2.5f)-250))),0);
+	    	System.out.println("Red: " + -1*((health*2.5f)-250));
+	    	System.out.println("Green: " + (250-(-1*((health*2.5f)-250))));
+	    	healthFill = new GradientFill(healthX+50, healthY, new Color(30, 16, 14),
+	                  healthX+50, healthY+20, healthColor);
 	    	healthBar.barOutlinePoly = new Image("assets/bar"+healthBar.bars+".png"); 
 	    	healthBar.update();
+	    	healthMeter = new Rectangle(healthX,healthY,100*health/100,20);
 	    	/*---------------------HEALTH BAR UPDATE END------------------------*/
 	        
 	        
 	        
 	        
 	        /*-----------------------CHARGE BAR UPDATE---------------------------*/
-	    	if(bulletPassing >= ((cooldownLimit*.8)/16) * deltaAverage)
+	    /*	if(bulletPassing >= ((cooldownLimit*.8)/16) * deltaAverage)
 	    	{
 	    		chargeBar.bars = 5;
 	    	}
@@ -627,7 +655,8 @@ public class GameplayState extends BasicGameState{
 			{
 				chargeBar.barOutlinePoly = new Image("assets/redbar"+chargeBar.bars+".png");
 			}
-	    	chargeBar.update();
+	    	chargeBar.update();*/
+	    	chargeMeter = new Rectangle(chargeX,chargeY,485*(bulletPassing/((cooldownLimit/16) * deltaAverage)),24);
 	    	/*-------------------------CHARGE BAR UPDATE END-------------------------*/
 	    	
 	    	
@@ -763,6 +792,9 @@ public class GameplayState extends BasicGameState{
 	    	
 	    	
 	    	/*---------------------UPDATE STATUS--------------------------*/
+	    	
+	    	
+	    	
 	    	if(health<=0)
 	    	{ 
 	    		
@@ -865,9 +897,16 @@ public class GameplayState extends BasicGameState{
 		 
 		 
     	/*---------------------RENDER HUD-----------------------------*/
+		//Draw Charge Bar
+	    	
+			 g.setColor(Color.darkGray);
+		        //g.fillRect(chargeX, chargeY, 485, 24);
+		        g.fill(chargeMeter, chargeFill); 
+		        g.setColor(Color.white);
 		//Draw HUD background
 		 hud.draw(0,0);
-		 
+
+		// chargeBar.barOutlinePoly.draw(400,3);
 		//Draw Level
 		g.drawString("Level: "+level,20,5);
 		
@@ -877,20 +916,23 @@ public class GameplayState extends BasicGameState{
     	
     	//Draw Health Bar
     	healthBar.barOutlinePoly.draw(600,3);
+		 g.setColor(Color.darkGray);
+	        g.fillRect(healthX, healthY, 100, 20);
+	        g.fill(healthMeter, healthFill); 
+	        g.setColor(Color.white);
     	
-    	//Draw Charge Bar
-    	chargeBar.barOutlinePoly.draw(400,3);
+    	
     	
     	//System.out.println("BulletPassing: " +bulletPassing);
     	//Draw Overload Or Heat Text
     	if(cooldown)
     	{
-    		g.drawString("OVERLOAD!",480,5);
+    		g.setColor(Color.red);
+    		g.drawString("OVERLOAD!",350,35);
+    		g.setColor(Color.white);
     	}
-    	else
-    	{
-    		g.drawString("Heat",480,5);
-    	}
+    	//g.drawString("Heat:",350,15);
+    	
     	g.drawString("Health: " + health,680,5);
     	g.drawString("Pass: " + enemiesPassed,700,35);
     	
@@ -925,7 +967,23 @@ public class GameplayState extends BasicGameState{
         		g.drawString("Press Escape", 350, 210);
         	}
     		
-    	}    	
+    	}
+    	//Render Glass Crack Effect
+    	if(health < 30)
+    	{
+    		if(crackFade < (100/16)*deltaAverage && crack.getAlpha() < 1)
+    		{
+    			
+    			crackFade += deltaAverage;
+    		}
+    		else if(crackFade > (100/16)*deltaAverage && crack.getAlpha() < 1)
+    		{
+    			crack.setAlpha(crack.getAlpha() + .1f);
+    			crackFade = 0;
+    		}
+    		crack.draw(0,0);
+    		
+    	}
     	/*------------------RENDER HUD END-------------------------------*/	
     	
     	/*---------------------------DEBUG-------------------------------*/
