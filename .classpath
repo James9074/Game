@@ -15,5 +15,8 @@
 	<classpathentry kind="lib" path="C:/Users/James/Documents/GitHub/Game/library/lwjgl_util.jar"/>
 	<classpathentry kind="lib" path="C:/Users/James/Documents/GitHub/Game/library/lwjgl_util_applet.jar"/>
 	<classpathentry kind="lib" path="C:/Users/James/Documents/GitHub/Game/library/lzma.jar"/>
+	<classpathentry kind="lib" path="library/slick-util.jar"/>
+	<classpathentry kind="lib" path="library/jogg-0.0.7.jar"/>
+	<classpathentry kind="lib" path="library/jorbis-0.0.15.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -75,7 +75,9 @@ public class GameplayState extends BasicGameState{
 	Image crack = null;
 	static Sound laser = null;
 	Sound smoke = null;
+	Sound crackSound = null;
 	Sound shieldOn = null;
+	Sound pause = null;
 	Level levelState = null;
 	ArrayList <Bullet> bullets = new ArrayList <Bullet>();
 	static ArrayList <Powerup> powerups = new ArrayList <Powerup>();
@@ -105,14 +107,19 @@ public class GameplayState extends BasicGameState{
 	static boolean needReset = false;
 	int enemiesPassed = 0;
 	int playerBulletDamage = 20;
-	int timer;
+	int timer = 0;
 	static float deltaTime = 0;
 	int lastPowerupSpawn = 0;
 	int chargeX = 160;
 	int chargeY = 33;
-	int healthX = 350;
+	int healthX = 300;
 	int healthY = 5;
+	boolean crackPlayed = false;
 	int powerupSpawnInterval = 0;
+	String playMode = null;
+	float clock = 0;
+	int time = 0;
+	String seconds = null;
 	
 	float deltaAdd = 0;
 	float deltaNumber = 0;
@@ -154,7 +161,8 @@ public class GameplayState extends BasicGameState{
      	cooldown = false;
      	powerupShield = false;
      	if(level == 1 || level == 2){
-     			music.loop(1f,.3f);
+     			music.loop(1f,.01f);
+     			music.fade(1000, .2f, false);
      	}
      	needReset = false;
      	enemiesPassed = 0;
@@ -212,9 +220,11 @@ public class GameplayState extends BasicGameState{
      	levelState.update(level);
 		
     	laser = new Sound("assets/laser.wav");
+    	crackSound = new Sound("assets/crack.ogg");
+    	pause = new Sound("assets/pause.wav");
 
     	chargeMeter = new Rectangle(chargeX,chargeY,485*bulletPassing/((cooldownLimit/16) * deltaAverage),24);
-    	healthMeter = new Rectangle(healthX,healthY,100*health/100,20);
+    	healthMeter = new Rectangle(healthX,healthY,200*health/100,20);
     	healthColor = new Color(100,180,0);
     	healthFill = new GradientFill(x, 0, new Color(30, 16, 14),
                 x , y+20, healthColor);
@@ -292,8 +302,9 @@ public class GameplayState extends BasicGameState{
         {
         	if(currentState != STATES.PLAYING)
         	{
-	        	music.pause();
+        		music.fade(1000, 0f, true);
 	        	//currentState = STATES.GAME_OVER_STATE;
+	        	MainMenuState.menuMusic.loop();
 	        	sbg.enterState(SimpleGame.MAINMENUSTATE, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
 	        }
         	else if(currentState == STATES.PLAYING)
@@ -308,11 +319,14 @@ public class GameplayState extends BasicGameState{
         	if(currentState != STATES.PAUSE_GAME_STATE)
         	{
         		music.pause();
+        		
         		currentState = STATES.PAUSE_GAME_STATE;
+        		pause.play();
         	}
         	else
         	{
         		currentState = STATES.PLAYING;
+        		pause.play();
         		music.resume();
         	}
         }
@@ -437,6 +451,28 @@ public class GameplayState extends BasicGameState{
     	 if(currentState != STATES.PAUSE_GAME_STATE)
     	 {
 	    	 /*-------------------------COLLISION-------------------------------*/
+    		//Player
+    		 	//Top
+    		 System.out.println(planePoly.getY());
+    		if(planePoly.getY()<-15)
+    		 {
+    			 y = -15;
+    		 }
+    		 	//Bottom
+    		 if(planePoly.getY()>375)
+    		 {
+    			 y = 375;
+    		 }
+    		 	//Left
+    		 if(planePoly.getX()<-50)
+    		 {
+    			 x=-50;
+    		 }
+    		 	//Right
+    		 if(planePoly.getX()>750)
+    		 {
+    			 x = 750;
+    		 }
 	    	//Bullet and Enemy
 	    	for(int i = 0; i < bullets.size(); i++)
 	    	{
@@ -587,7 +623,7 @@ public class GameplayState extends BasicGameState{
 	    		health = 0;
 	    		healthBar.bars = 0; 
 	    	}
-	    	else if(health <= 20)
+	    	/*else if(health <= 20)
 	    	{
 	    		healthBar.bars = 1; 
 	    	}
@@ -606,17 +642,14 @@ public class GameplayState extends BasicGameState{
 	    	else
 	    	{
 	    		healthBar.bars = 5; 
-	    	}
+	    	}*/
 	    	
-	    	//healthColor = new Color(),(100 - (-1*(health-200))),0);
-	    	healthColor = new Color(-1*((health*2.5f)-250),(250 - (-1*((health*2.5f)-250))),0);
-	    	System.out.println("Red: " + -1*((health*2.5f)-250));
-	    	System.out.println("Green: " + (250-(-1*((health*2.5f)-250))));
-	    	healthFill = new GradientFill(healthX+50, healthY, new Color(30, 16, 14),
-	                  healthX+50, healthY+20, healthColor);
+	    	healthColor = new Color((-1*((health)-100f)/100),((100 - (-1*((health)-100f)))/100),0f);
+	    	healthFill = new GradientFill(healthX, healthY-25, new Color(30, 16, 14),
+	                  healthX, healthY+20, healthColor);
 	    	healthBar.barOutlinePoly = new Image("assets/bar"+healthBar.bars+".png"); 
 	    	healthBar.update();
-	    	healthMeter = new Rectangle(healthX,healthY,100*health/100,20);
+	    	healthMeter = new Rectangle(healthX,healthY,200f*(health/100f),20);
 	    	/*---------------------HEALTH BAR UPDATE END------------------------*/
 	        
 	        
@@ -809,6 +842,18 @@ public class GameplayState extends BasicGameState{
 	    		}
 	    	}
 	    	/*------------------UPDATE STATUS END-------------------------*/
+	    	
+	    	
+	    	
+	    	
+	    	/*---------------------UPDATE TIMER---------------------------*/
+	    	clock += deltaAverage;
+	    	if(clock/deltaAverage >= 60)
+	    	{
+	    		time+=1;
+	    		clock = 0;
+	    	}
+	    	/*------------------UPDATE TIMER END--------------------------*/
     	}
     	
     }
@@ -899,7 +944,7 @@ public class GameplayState extends BasicGameState{
     	/*---------------------RENDER HUD-----------------------------*/
 		//Draw Charge Bar
 	    	
-			 g.setColor(Color.darkGray);
+			 g.setColor(Color.blue);
 		        //g.fillRect(chargeX, chargeY, 485, 24);
 		        g.fill(chargeMeter, chargeFill); 
 		        g.setColor(Color.white);
@@ -915,11 +960,12 @@ public class GameplayState extends BasicGameState{
     	
     	
     	//Draw Health Bar
-    	healthBar.barOutlinePoly.draw(600,3);
-		 g.setColor(Color.darkGray);
-	        g.fillRect(healthX, healthY, 100, 20);
+    	//healthBar.barOutlinePoly.draw(600,3);
+		 g.setColor(new Color(56,66,88));
+	        g.fillRect(healthX, healthY, 200, 20);
 	        g.fill(healthMeter, healthFill); 
 	        g.setColor(Color.white);
+	        g.drawString("Health: " + health,520,5);
     	
     	
     	
@@ -933,8 +979,17 @@ public class GameplayState extends BasicGameState{
     	}
     	//g.drawString("Heat:",350,15);
     	
-    	g.drawString("Health: " + health,680,5);
-    	g.drawString("Pass: " + enemiesPassed,700,35);
+    	
+    	g.drawString("Pass: " + enemiesPassed,700,5);
+    	if((time%60 < 10))
+    	{
+    		seconds = ":0"+time%60;
+    	}
+    	else
+    	{
+    		seconds = ":"+time%60;
+    	}
+    	g.drawString("Time: " + time/60 + seconds,650,35);
     	
     	//=======UPON PAUSE==========
     	//Draw Pause Box
@@ -973,7 +1028,7 @@ public class GameplayState extends BasicGameState{
     	{
     		if(crackFade < (100/16)*deltaAverage && crack.getAlpha() < 1)
     		{
-    			
+    			//crackSound.play();
     			crackFade += deltaAverage;
     		}
     		else if(crackFade > (100/16)*deltaAverage && crack.getAlpha() < 1)
@@ -982,8 +1037,13 @@ public class GameplayState extends BasicGameState{
     			crackFade = 0;
     		}
     		crack.draw(0,0);
-    		
+    		if(!crackPlayed)
+    		{
+    		crackSound.play();
+    		crackPlayed = true;
+    		}
     	}
+    	
     	/*------------------RENDER HUD END-------------------------------*/	
     	
     	/*---------------------------DEBUG-------------------------------*/

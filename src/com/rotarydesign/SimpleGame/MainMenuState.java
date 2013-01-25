@@ -5,6 +5,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
@@ -17,6 +18,7 @@ public class MainMenuState extends BasicGameState {
     int stateID = 0;
     static int levelSelect = 1;
     Sound fx = null;
+    static Music menuMusic = null;
     boolean insideStartGame = false;
     boolean insideExit = false;
     Image startGameOption = null;
@@ -43,7 +45,8 @@ public class MainMenuState extends BasicGameState {
  
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
     	background = new Image("assets/menu.jpg");
-    	
+    	menuMusic = new Music("assets/menuMusic.wav");
+    	menuMusic.loop();
     	gc.setShowFPS(false); 
     }
  
@@ -67,6 +70,7 @@ public class MainMenuState extends BasicGameState {
     		GameplayState.playing = false;
     		GameplayState.level = levelSelect;
     		//GameplayState.health = 100;
+    		menuMusic.fade(500, 0f, true);
     		sbg.enterState(SimpleGame.GAMEPLAYSTATE, new FadeOutTransition(Color.black), null);
     		
     	}

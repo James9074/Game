@@ -17,7 +17,7 @@ public class SimpleGame extends StateBasedGame {
  
     public SimpleGame()
     {
-        super("Temp");
+        super("New Game 01 | What else do I call it?");
     }
  
     public static void main(String[] args) throws SlickException
