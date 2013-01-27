@@ -38,7 +38,7 @@ public void update() throws SlickException{
 		randomDirection += -1 + random.nextInt(3);
 		timePassed = 0;
 		GameplayState.enemyBullets.add(new Bullet(posX-3,posY+7,1,5));
-		GameplayState.laser.play(.6f,.2f);
+		GameplayState.laser.play(.6f,.1f);
 	}
 	
 	

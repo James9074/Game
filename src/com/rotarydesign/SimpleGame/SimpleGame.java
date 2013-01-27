@@ -11,9 +11,8 @@ public class SimpleGame extends StateBasedGame {
  
     public static final int MAINMENUSTATE          = 0;
     public static final int GAMEPLAYSTATE          = 1;
-    public static final int PAUSEDSTATE          = 2;
-
-    public static final int PAUSEDSDTATE          = 3;
+    public static final int PAUSEDSTATE            = 2;
+    public static final int PAUSEDSDTATE           = 3;
  
     public SimpleGame()
     {

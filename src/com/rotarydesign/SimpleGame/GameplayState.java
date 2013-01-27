@@ -1,6 +1,5 @@
 package com.rotarydesign.SimpleGame;
 
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -17,8 +16,6 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
-
-
 
 public class GameplayState extends BasicGameState{
 	
@@ -162,8 +159,9 @@ public class GameplayState extends BasicGameState{
      	powerupShield = false;
      	if(level == 1 || level == 2){
      			music.loop(1f,.01f);
-     			music.fade(1000, .2f, false);
+     			music.fade(1000, .5f, false);
      	}
+     	
      	needReset = false;
      	enemiesPassed = 0;
      	playerBulletDamage = 20;
@@ -232,7 +230,7 @@ public class GameplayState extends BasicGameState{
                 x + 485, 0, new Color(145, 34, 34));
     	bullet = new Image("assets/bullet.jpg");
     	//bulletGeneration = new BulletGeneration();
-    	music = new Music("assets/bgmusic.wav");
+    	music = new Music(Level.music);
     	smoke = new Sound("assets/smoke.wav");
     	shieldOn = new Sound("assets/shieldOn.wav");
     	
@@ -337,7 +335,7 @@ public class GameplayState extends BasicGameState{
         	if(lastFire > 80)
         	{
         		bullets.add(new Bullet(x+112,y+26,2,20));
-        		laser.play(1f,.3f);
+        		laser.play(1f,.1f);
         		lastFire = 0; 
         		bulletRecharge++;
         		bulletPassing += deltaAverage *.5f;
@@ -398,6 +396,9 @@ public class GameplayState extends BasicGameState{
     	
     	
     	/*------------------------UPDATE DELTA-----------------------------*/
+        if(deltaAverage == 0){
+        	deltaAverage = delta;
+        }
     	if(deltaNumber < 30)
     	{
     		deltaAdd += delta;
@@ -453,7 +454,6 @@ public class GameplayState extends BasicGameState{
 	    	 /*-------------------------COLLISION-------------------------------*/
     		//Player
     		 	//Top
-    		 System.out.println(planePoly.getY());
     		if(planePoly.getY()<-15)
     		 {
     			 y = -15;
@@ -558,7 +558,7 @@ public class GameplayState extends BasicGameState{
 	    			if(powerups.get(j).powerupPoly.intersects(planePoly))
 	    					{
 	    						powerupShield = true;
-	    						shieldOn.play(1f,.5f);
+	    						shieldOn.play(1f,.2f);
 	    				powerups.remove(powerups.get(j));
 	    					}
 	    			 }
@@ -952,6 +952,7 @@ public class GameplayState extends BasicGameState{
 		 hud.draw(0,0);
 
 		// chargeBar.barOutlinePoly.draw(400,3);
+
 		//Draw Level
 		g.drawString("Level: "+level,20,5);
 		
