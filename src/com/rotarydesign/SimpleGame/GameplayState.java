@@ -147,13 +147,14 @@ public class GameplayState extends BasicGameState{
      	spawnInterval = 0;
      	landX = 0;
      	score = 0;
-     	level = MainMenuState.levelSelect;
+     	level = LevelSelectMenuState.levelSelect;
      	bulletRecharge = 0;
      	bulletPassing = 0;
      	playing = true;
      	health = 100;
      	speed = 0 ;
      	timer = 0;
+     	time = 0;
      	endTimer = 0;
      	cooldown = false;
      	powerupShield = false;
@@ -261,7 +262,7 @@ public class GameplayState extends BasicGameState{
         if(input.isKeyDown(Input.KEY_LSHIFT) && currentState == STATES.PLAYING)
         {
         	speed = 0.2f * delta;
-        } 
+        }
         else
         {
         	speed = 0.4f * delta;
@@ -1038,11 +1039,7 @@ public class GameplayState extends BasicGameState{
     			crackFade = 0;
     		}
     		crack.draw(0,0);
-    		if(!crackPlayed)
-    		{
-    		crackSound.play();
-    		crackPlayed = true;
-    		}
+    		
     	}
     	
     	/*------------------RENDER HUD END-------------------------------*/	
@@ -1055,5 +1052,7 @@ public class GameplayState extends BasicGameState{
 	
     	/*-------------------------DEBUG END-----------------------------*/
     }
-    
+    public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
+    	reset();
+    }
 }

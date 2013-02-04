@@ -14,7 +14,7 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 
 
 
-public class MainMenuState extends BasicGameState {
+public class OptionsMenuState extends BasicGameState {
  
 	
 	private enum STATES {
@@ -24,8 +24,8 @@ public class MainMenuState extends BasicGameState {
 	
 	public static STATES currentState = null;
 	
-    int stateID = 0;
-    static int itemSelect = 1;
+    int stateID = 2;
+    static int levelSelect = 1;
     Sound fx = null;
     static Music menuMusic = null;
     boolean insideStartGame = false;
@@ -36,13 +36,9 @@ public class MainMenuState extends BasicGameState {
  
     float startGameScale = 1;
     float exitScale = 1;
-    int newGameX = 50;
-    int newGameY = 250;
-    int loadGameX = 50;
-    int loadGameY = 270;
      
  
-    MainMenuState( int stateID ) 
+    OptionsMenuState( int stateID ) 
     {
        this.stateID = stateID;
     }
@@ -63,10 +59,23 @@ public class MainMenuState extends BasicGameState {
     	currentState = STATES.OPTIONS_STATE;
     	gc.setShowFPS(false); 
     }
-    public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
-    	itemSelect = 1;
+ 
+    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+    	if(currentState == STATES.MAIN_MENU_STATE)
+    	{
+	    	background.draw(0,0);
+	    	g.setColor(Color.white);
+	    	g.drawString("Controls:\nWASD - Movement\nLeft SHIFT - Slow Ship\nSpace Or Left Click - Fire\n\n\nClick To Begin\n\nEscape To Exit",330,100);
+	    	g.drawString("Level: " + levelSelect, 330, 300);
+	    }
+    	if(currentState == STATES.OPTIONS_STATE)
+    	{
+	    	background.draw(0,0);
+	    	g.setColor(Color.green);
+	    	g.drawString("Controls:\nWASD - Movement\nLeft SHIFT - Slow Ship\nSpace Or Left Click - Fire\n\n\nClick To Begin\n\nEscape To Exit",330,100);
+	    	g.drawString("Level: " + levelSelect, 330, 300);
+	    }
     }
-
  
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
     	Input input = gc.getInput();
@@ -77,60 +86,38 @@ public class MainMenuState extends BasicGameState {
     		
     		//GameplayState.currentState = STATES.START_GAME_STATE;
     		//GameplayState.music.loop(1f,.3f);
+    		GameplayState.needReset = true;
     		GameplayState.playing = false;
+    		GameplayState.level = levelSelect;
     		//GameplayState.health = 100;
     		menuMusic.fade(500, 0f, true);
-    		sbg.enterState(SimpleGame.COMMANDMENUSTATE, new FadeOutTransition(Color.black), null);
+    		if(levelSelect == 1){
+    		sbg.enterState(SimpleGame.MAINMENUSTATE, new FadeOutTransition(Color.black), null);
+    		}
+    		if(levelSelect == 2){
+        		sbg.enterState(SimpleGame.GAMEPLAYSTATE, new FadeOutTransition(Color.black), null);
+    		}
     		
     	}
-    	
-    	
     	
     	if (input.isKeyPressed(Input.KEY_ESCAPE))
     	{
     		gc.exit();
     	}
-    	if (input.isKeyPressed(Input.KEY_ENTER))
-    	{
-    		if(itemSelect == 1){
-    			sbg.enterState(SimpleGame.COMMANDMENUSTATE, new FadeOutTransition(Color.black), null);
-    	    	}
-    	    	else if(itemSelect == 2){
-    	    		sbg.enterState(SimpleGame.COMMANDMENUSTATE, new FadeOutTransition(Color.black), null);
-    	    	}
-    	}
     	
     	//Level Select
-    	if (input.isKeyPressed(Input.KEY_UP))
+    	if (input.isKeyPressed(Input.KEY_LEFT))
     	{
-    		if(itemSelect > 1){
-    			itemSelect -= 1;
+    		if(levelSelect > 1){
+    		levelSelect -= 1;
     		}
     	}
-    	if (input.isKeyPressed(Input.KEY_DOWN))
+    	if (input.isKeyPressed(Input.KEY_RIGHT))
     	{
-    		if(itemSelect < 2){
-    			itemSelect += 1;
+    		if(levelSelect < 2){
+    		levelSelect += 1;
     		}
     	}
     }
-    
-    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-    	background.draw(0,0);
-    	if(itemSelect == 1){
-    	g.setColor(Color.gray);
-    	}
-    	else {
-    		g.setColor(Color.white);
-    	}
-    	g.drawString("New Game",newGameX,newGameY);
-     	if(itemSelect == 2){
-        	g.setColor(Color.gray);
-        	}
-        	else {
-        		g.setColor(Color.white);
-        	}
-    	g.drawString("Load Game",loadGameX,loadGameY);
-}
  
 }

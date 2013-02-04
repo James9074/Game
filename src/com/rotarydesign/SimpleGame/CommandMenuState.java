@@ -14,7 +14,7 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 
 
 
-public class MainMenuState extends BasicGameState {
+public class CommandMenuState extends BasicGameState {
  
 	
 	private enum STATES {
@@ -24,7 +24,7 @@ public class MainMenuState extends BasicGameState {
 	
 	public static STATES currentState = null;
 	
-    int stateID = 0;
+    int stateID = 6;
     static int itemSelect = 1;
     Sound fx = null;
     static Music menuMusic = null;
@@ -36,13 +36,15 @@ public class MainMenuState extends BasicGameState {
  
     float startGameScale = 1;
     float exitScale = 1;
-    int newGameX = 50;
-    int newGameY = 250;
-    int loadGameX = 50;
-    int loadGameY = 270;
+    int levelSelectX = 50;
+    int levelSelectY = 230;
+    int storeX = 50;
+    int storeY = 250;
+    int optionsX = 50;
+    int optionsY = 270;
      
  
-    MainMenuState( int stateID ) 
+    CommandMenuState( int stateID ) 
     {
        this.stateID = stateID;
     }
@@ -63,10 +65,32 @@ public class MainMenuState extends BasicGameState {
     	currentState = STATES.OPTIONS_STATE;
     	gc.setShowFPS(false); 
     }
-    public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
-    	itemSelect = 1;
+ 
+    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+	    	background.draw(0,0);
+	    	g.setColor(Color.white);
+	    	if(itemSelect == 1){
+	        	g.setColor(Color.gray);
+	        	}
+	        	else {
+	        		g.setColor(Color.white);
+	        	}
+	    	g.drawString("Level Select",levelSelectX,levelSelectY);
+	    	if(itemSelect == 2){
+	        	g.setColor(Color.gray);
+	        	}
+	        	else {
+	        		g.setColor(Color.white);
+	        	}
+	    	g.drawString("Store",storeX,storeY);
+	    	if(itemSelect == 3){
+	        	g.setColor(Color.gray);
+	        	}
+	        	else {
+	        		g.setColor(Color.white);
+	        	}
+	    	g.drawString("Options",optionsX,optionsY);
     }
-
  
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
     	Input input = gc.getInput();
@@ -77,27 +101,31 @@ public class MainMenuState extends BasicGameState {
     		
     		//GameplayState.currentState = STATES.START_GAME_STATE;
     		//GameplayState.music.loop(1f,.3f);
+    		GameplayState.needReset = true;
     		GameplayState.playing = false;
+    		GameplayState.level = itemSelect;
     		//GameplayState.health = 100;
     		menuMusic.fade(500, 0f, true);
-    		sbg.enterState(SimpleGame.COMMANDMENUSTATE, new FadeOutTransition(Color.black), null);
+    		sbg.enterState(SimpleGame.GAMEPLAYSTATE, new FadeOutTransition(Color.black), null);
     		
     	}
     	
-    	
-    	
     	if (input.isKeyPressed(Input.KEY_ESCAPE))
     	{
-    		gc.exit();
+    		sbg.enterState(SimpleGame.MAINMENUSTATE, new FadeOutTransition(Color.black), null);
     	}
     	if (input.isKeyPressed(Input.KEY_ENTER))
     	{
     		if(itemSelect == 1){
-    			sbg.enterState(SimpleGame.COMMANDMENUSTATE, new FadeOutTransition(Color.black), null);
+    			sbg.enterState(SimpleGame.LEVELSELECTMENUSTATE, new FadeOutTransition(Color.black), null);
     	    	}
     	    	else if(itemSelect == 2){
-    	    		sbg.enterState(SimpleGame.COMMANDMENUSTATE, new FadeOutTransition(Color.black), null);
+    	    		sbg.enterState(SimpleGame.GAMEPLAYSTATE, new FadeOutTransition(Color.black), null);
     	    	}
+    	    	else if(itemSelect == 3){
+    	    		sbg.enterState(SimpleGame.STOREMENUSTATE, new FadeOutTransition(Color.black), null);
+    	    	}
+    		sbg.enterState(SimpleGame.LEVELSELECTMENUSTATE, new FadeOutTransition(Color.black), null);
     	}
     	
     	//Level Select
@@ -109,28 +137,13 @@ public class MainMenuState extends BasicGameState {
     	}
     	if (input.isKeyPressed(Input.KEY_DOWN))
     	{
-    		if(itemSelect < 2){
+    		if(itemSelect < 3){
     			itemSelect += 1;
     		}
     	}
     }
-    
-    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-    	background.draw(0,0);
-    	if(itemSelect == 1){
-    	g.setColor(Color.gray);
-    	}
-    	else {
-    		g.setColor(Color.white);
-    	}
-    	g.drawString("New Game",newGameX,newGameY);
-     	if(itemSelect == 2){
-        	g.setColor(Color.gray);
-        	}
-        	else {
-        		g.setColor(Color.white);
-        	}
-    	g.drawString("Load Game",loadGameX,loadGameY);
-}
+    public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
+    	itemSelect = 1;
+    }
  
 }
