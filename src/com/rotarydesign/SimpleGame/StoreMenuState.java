@@ -14,7 +14,7 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 
 
 
-public class LevelSelectMenuState extends BasicGameState {
+public class StoreMenuState extends BasicGameState {
  
 	
 	private enum STATES {
@@ -25,7 +25,7 @@ public class LevelSelectMenuState extends BasicGameState {
 	public static STATES currentState = null;
 	
     int stateID = 6;
-    static int levelSelect = 1;
+    static int itemSelect = 1;
     Sound fx = null;
     static Music menuMusic = null;
     boolean insideStartGame = false;
@@ -36,9 +36,15 @@ public class LevelSelectMenuState extends BasicGameState {
  
     float startGameScale = 1;
     float exitScale = 1;
+    int levelSelectX = 50;
+    int levelSelectY = 230;
+    int storeX = 50;
+    int storeY = 250;
+    int optionsX = 50;
+    int optionsY = 270;
      
  
-    LevelSelectMenuState( int stateID ) 
+    StoreMenuState( int stateID ) 
     {
        this.stateID = stateID;
     }
@@ -60,7 +66,7 @@ public class LevelSelectMenuState extends BasicGameState {
     	gc.setShowFPS(false); 
     }
  
-
+    
  
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
     	Input input = gc.getInput();
@@ -73,10 +79,10 @@ public class LevelSelectMenuState extends BasicGameState {
     		//GameplayState.music.loop(1f,.3f);
     		GameplayState.needReset = true;
     		GameplayState.playing = false;
-    		GameplayState.level = levelSelect;
+    		GameplayState.level = itemSelect;
     		//GameplayState.health = 100;
     		menuMusic.fade(500, 0f, true);
-    		//sbg.enterState(SimpleGame.GAMEPLAYSTATE, new FadeOutTransition(Color.black), null);
+    		sbg.enterState(SimpleGame.GAMEPLAYSTATE, new FadeOutTransition(Color.black), null);
     		
     	}
     	
@@ -86,31 +92,59 @@ public class LevelSelectMenuState extends BasicGameState {
     	}
     	if (input.isKeyPressed(Input.KEY_ENTER))
     	{
-    		
-    		sbg.enterState(SimpleGame.GAMEPLAYSTATE, new FadeOutTransition(Color.black), null);
+    		if(itemSelect == 1){
+    			sbg.enterState(SimpleGame.LEVELSELECTMENUSTATE, new FadeOutTransition(Color.black), null);
+    	    	}
+    	    	else if(itemSelect == 2){
+    	    		sbg.enterState(SimpleGame.STOREMENUSTATE, new FadeOutTransition(Color.black), null);
+    	    	}
+    	    	else if(itemSelect == 3){
+    	    		sbg.enterState(SimpleGame.OPTIONSMENUSTATE, new FadeOutTransition(Color.black), null);
+    	    	}
+    		sbg.enterState(SimpleGame.LEVELSELECTMENUSTATE, new FadeOutTransition(Color.black), null);
     	}
     	
     	//Level Select
-    	if (input.isKeyPressed(Input.KEY_LEFT))
+    	if (input.isKeyPressed(Input.KEY_UP))
     	{
-    		if(levelSelect > 1){
-    			levelSelect -= 1;
+    		if(itemSelect > 1){
+    			itemSelect -= 1;
     		}
     	}
-    	if (input.isKeyPressed(Input.KEY_RIGHT))
+    	if (input.isKeyPressed(Input.KEY_DOWN))
     	{
-    		if(levelSelect < 2){
-    			levelSelect += 1;
+    		if(itemSelect < 3){
+    			itemSelect += 1;
     		}
     	}
-    }    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-	    	background.draw(0,0);
-	    	g.setColor(Color.white);
-	    	//g.drawString("Controls:\nWASD - Movement\nLeft SHIFT - Slow Ship\nSpace Or Left Click - Fire\n\n\nClick To Begin\n\nEscape To Exit",330,100);
-	    	g.drawString("SelectLevel: " + levelSelect, 330, 300);
     }
     public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
-    	
+    	itemSelect = 1;
     }
+    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+    	background.draw(0,0);
+    	g.setColor(Color.white);
+    	if(itemSelect == 1){
+        	g.setColor(Color.gray);
+        	}
+        	else {
+        		g.setColor(Color.white);
+        	}
+    	g.drawString("STORE STORE STORE",levelSelectX,levelSelectY);
+    	if(itemSelect == 2){
+        	g.setColor(Color.gray);
+        	}
+        	else {
+        		g.setColor(Color.white);
+        	}
+    	g.drawString("Store",storeX,storeY);
+    	if(itemSelect == 3){
+        	g.setColor(Color.gray);
+        	}
+        	else {
+        		g.setColor(Color.white);
+        	}
+    	g.drawString("Options",optionsX,optionsY);
+}
  
 }

@@ -66,31 +66,7 @@ public class CommandMenuState extends BasicGameState {
     	gc.setShowFPS(false); 
     }
  
-    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-	    	background.draw(0,0);
-	    	g.setColor(Color.white);
-	    	if(itemSelect == 1){
-	        	g.setColor(Color.gray);
-	        	}
-	        	else {
-	        		g.setColor(Color.white);
-	        	}
-	    	g.drawString("Level Select",levelSelectX,levelSelectY);
-	    	if(itemSelect == 2){
-	        	g.setColor(Color.gray);
-	        	}
-	        	else {
-	        		g.setColor(Color.white);
-	        	}
-	    	g.drawString("Store",storeX,storeY);
-	    	if(itemSelect == 3){
-	        	g.setColor(Color.gray);
-	        	}
-	        	else {
-	        		g.setColor(Color.white);
-	        	}
-	    	g.drawString("Options",optionsX,optionsY);
-    }
+    
  
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
     	Input input = gc.getInput();
@@ -116,16 +92,16 @@ public class CommandMenuState extends BasicGameState {
     	}
     	if (input.isKeyPressed(Input.KEY_ENTER))
     	{
-    		if(itemSelect == 1){
+    	if(itemSelect == 1){
     			sbg.enterState(SimpleGame.LEVELSELECTMENUSTATE, new FadeOutTransition(Color.black), null);
     	    	}
     	    	else if(itemSelect == 2){
-    	    		sbg.enterState(SimpleGame.GAMEPLAYSTATE, new FadeOutTransition(Color.black), null);
-    	    	}
-    	    	else if(itemSelect == 3){
     	    		sbg.enterState(SimpleGame.STOREMENUSTATE, new FadeOutTransition(Color.black), null);
     	    	}
-    		sbg.enterState(SimpleGame.LEVELSELECTMENUSTATE, new FadeOutTransition(Color.black), null);
+    	    	else if(itemSelect == 3){
+    	    		sbg.enterState(SimpleGame.OPTIONSMENUSTATE, new FadeOutTransition(Color.black), null);
+    	    	}
+    		
     	}
     	
     	//Level Select
@@ -145,5 +121,30 @@ public class CommandMenuState extends BasicGameState {
     public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
     	itemSelect = 1;
     }
+    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+    	background.draw(0,0);
+    	g.setColor(Color.white);
+    	if(itemSelect == 1){
+        	g.setColor(Color.gray);
+        	}
+        	else {
+        		g.setColor(Color.white);
+        	}
+    	g.drawString("Level Select",levelSelectX,levelSelectY);
+    	if(itemSelect == 2){
+        	g.setColor(Color.gray);
+        	}
+        	else {
+        		g.setColor(Color.white);
+        	}
+    	g.drawString("Store",storeX,storeY);
+    	if(itemSelect == 3){
+        	g.setColor(Color.gray);
+        	}
+        	else {
+        		g.setColor(Color.white);
+        	}
+    	g.drawString("Options",optionsX,optionsY);
+}
  
 }

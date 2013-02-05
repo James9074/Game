@@ -1,9 +1,7 @@
 package com.rotarydesign.SimpleGame;
  
 import org.newdawn.slick.AppGameContainer;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -49,7 +47,7 @@ public class SimpleGame extends StateBasedGame {
         this.addState(new GameplayState(NEWGAMEMENUSTATE));
         this.addState(new GameplayState(LOADGAMEMENUSTATE));
         this.addState(new CommandMenuState(COMMANDMENUSTATE));
-        this.addState(new GameplayState(STOREMENUSTATE));
+        this.addState(new StoreMenuState(STOREMENUSTATE));
         this.addState(new LevelSelectMenuState(LEVELSELECTMENUSTATE));
         
 

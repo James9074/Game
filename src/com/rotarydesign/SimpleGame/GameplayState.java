@@ -92,7 +92,7 @@ public class GameplayState extends BasicGameState{
 	int spawnInterval = 500;
 	int landX = 0;
 	int score = 0;
-	static int level = 1;
+	static int level = LevelSelectMenuState.levelSelect;
 	int bulletRecharge = 0;
 	float bulletPassing = 0;
 	static boolean playing = true;
@@ -131,7 +131,6 @@ public class GameplayState extends BasicGameState{
  
 	public void initialize()
 	{
-		
         healthBar.bars = 5;
      	chargeBar.bars = 0;
      	enemies.clear();
@@ -304,7 +303,7 @@ public class GameplayState extends BasicGameState{
         		music.fade(1000, 0f, true);
 	        	//currentState = STATES.GAME_OVER_STATE;
 	        	MainMenuState.menuMusic.loop();
-	        	sbg.enterState(SimpleGame.MAINMENUSTATE, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
+	        	sbg.enterState(SimpleGame.COMMANDMENUSTATE, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
 	        }
         	else if(currentState == STATES.PLAYING)
         	{
@@ -397,6 +396,12 @@ public class GameplayState extends BasicGameState{
     	
     	
     	/*------------------------UPDATE DELTA-----------------------------*/
+        System.out.println("Average: "+deltaAverage);
+		System.out.println("Delta: "+delta);
+		System.out.println("Add: "+deltaAdd);
+		System.out.println("Number: "+deltaNumber);
+
+		System.out.println("-------------");
         if(deltaAverage == 0){
         	deltaAverage = delta;
         }
@@ -408,8 +413,11 @@ public class GameplayState extends BasicGameState{
     	else
     	{
     		deltaAverage = deltaAdd/30;
+    		deltaAdd = 0;
+    		deltaNumber = 0;
     		//--Debugging
     		//System.out.println(deltaAverage);
+    		//System.out.println(delta)
     	}
     	/*----------------------UPDATE DELTA END---------------------------*/
     	
@@ -729,6 +737,7 @@ public class GameplayState extends BasicGameState{
 	    	{
 	    		enemies.get(i).timePassed += deltaAverage * .5f;
 	    		enemies.get(i).updateInterval = deltaAverage;
+
 	    	}    	
 	    	if(currentState == STATES.GAME_OVER_STATE)
 	    	{
@@ -835,7 +844,7 @@ public class GameplayState extends BasicGameState{
 	    		//Upon death, play end sound and stop playing
 	    		if(currentState != STATES.GAME_OVER_STATE)
 	    		{	
-	    			smoke.play();
+	    			smoke.play(.1f,1f);
 	    			//music.fade(2,.1f,true);
 	    			currentState = STATES.GAME_OVER_STATE;
 	    			System.out.println(currentState);

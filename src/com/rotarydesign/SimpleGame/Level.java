@@ -20,8 +20,7 @@ public class Level {
 		area = "space";
 		level = 1;
 		GameplayState.textColor = Color.white;
-		music = "assets/music/level1.wav";
-		
+		music = "assets/music/level1.wav";	
 	}
 	if(level == 2){
 		area = "sky";
