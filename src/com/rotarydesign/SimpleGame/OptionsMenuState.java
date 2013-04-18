@@ -61,7 +61,7 @@ public class OptionsMenuState extends BasicGameState {
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
     	background = new Image("assets/menu.jpg");
     	menuMusic = new Music("assets/menuMusic.wav");
-    	menuMusic.loop();
+    	//menuMusic.loop();
     	currentState = STATES.OPTIONS_STATE;
     	gc.setShowFPS(false); 
     }

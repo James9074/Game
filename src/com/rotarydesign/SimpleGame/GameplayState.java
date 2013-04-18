@@ -8,10 +8,17 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.ScalableGame;
+import org.newdawn.slick.UnicodeFont;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.newdawn.slick.fills.GradientFill;
+import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.geom.*;
+import org.newdawn.slick.loading.DeferredResource;
+import org.newdawn.slick.loading.LoadingList;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
@@ -124,6 +131,8 @@ public class GameplayState extends BasicGameState{
 	static Color textColor = null;
 	Color messageBoxColor = null;
 	Color healthColor = null;
+	UnicodeFont mainFont;
+	String lastLoaded;
 	
 	 
  
@@ -172,6 +181,12 @@ public class GameplayState extends BasicGameState{
 	}
     public void init(GameContainer gc, StateBasedGame sbg) 
 			throws SlickException {
+        //LoadingList.setDeferredLoading(true);
+        //ResourceManager.load("res/resources.xml");
+        
+        //load second as a deferred resource
+        
+
     	
     	//File filename = new File("C:/levels/level01.txt");
     	//FileReader fw = new FileReader(filename);
@@ -203,6 +218,10 @@ public class GameplayState extends BasicGameState{
 		shield = new Image("assets/shield.png");
 		hud = new Image("assets/hud.png");
 		crack = new Image("assets/crack.png");
+		laser = new Sound("assets/laser.wav");
+    	crackSound = new Sound("assets/crack.ogg");
+    	pause = new Sound("assets/pause.wav");
+    	bullet = new Image("assets/bullet.jpg");
 		crack.setAlpha(0);
 		
 		textColor = new Color(22f,22f,22f,.5f);
@@ -217,9 +236,7 @@ public class GameplayState extends BasicGameState{
 
      	levelState.update(level);
 		
-    	laser = new Sound("assets/laser.wav");
-    	crackSound = new Sound("assets/crack.ogg");
-    	pause = new Sound("assets/pause.wav");
+    	
 
     	chargeMeter = new Rectangle(chargeX,chargeY,485*bulletPassing/((cooldownLimit/16) * deltaAverage),24);
     	healthMeter = new Rectangle(healthX,healthY,200*health/100,20);
@@ -228,7 +245,7 @@ public class GameplayState extends BasicGameState{
                 x , y+20, healthColor);
     	chargeFill = new GradientFill(x, 0, new Color(0, 16, 114),
                 x + 485, 0, new Color(145, 34, 34));
-    	bullet = new Image("assets/bullet.jpg");
+    	
     	//bulletGeneration = new BulletGeneration();
     	music = new Music(Level.music);
     	smoke = new Sound("assets/smoke.wav");
@@ -242,6 +259,16 @@ public class GameplayState extends BasicGameState{
     	backgrounds.add(new Background(2000,0,levelState.level,6));
     	backgrounds.add(new Background(2400,0,levelState.level,7));
     	backgrounds.add(new Background(2800,0,levelState.level,8));
+    	
+    	/*------------------------Set Fonts-----------------------------*/
+    	
+    	mainFont = new UnicodeFont("assets/fonts/Conduit.ttf", 17, false, false);
+    	mainFont.addAsciiGlyphs();
+    	mainFont.addGlyphs(400, 600);
+    	mainFont.getEffects().add(new ColorEffect());
+    	mainFont.loadGlyphs();
+    	
+    	/*------------------------Set Fonts End-----------------------------*/
     }
  
    
@@ -250,10 +277,11 @@ public class GameplayState extends BasicGameState{
     {
     	/*------------------------SET VARIABLES----------------------------*/
     	Input input = gc.getInput();
+    	boolean focus = gc.hasFocus();
     	deltaTime = delta;
     	/*-----------------------------------------------------------------*/
     	
-        
+        if(focus){
         
         
         /*------------------------------DETECT INPUT---------------------------*/
@@ -396,12 +424,20 @@ public class GameplayState extends BasicGameState{
     	
     	
     	/*------------------------UPDATE DELTA-----------------------------*/
-        System.out.println("Average: "+deltaAverage);
+       /* System.out.println("Average: "+deltaAverage);
 		System.out.println("Delta: "+delta);
 		System.out.println("Add: "+deltaAdd);
 		System.out.println("Number: "+deltaNumber);
 
 		System.out.println("-------------");
+		*/
+      /*  if (LoadingList.get().getRemainingResources() > 0) { 
+            DeferredResource nextResource = LoadingList.get().getNext(); 
+            nextResource.load();
+            lastLoaded = nextResource.getDescription();
+        } else { 
+            // loading is complete, do normal updates here      
+        }*/
         if(deltaAverage == 0){
         	deltaAverage = delta;
         }
@@ -416,7 +452,7 @@ public class GameplayState extends BasicGameState{
     		deltaAdd = 0;
     		deltaNumber = 0;
     		//--Debugging
-    		//System.out.println(deltaAverage);
+    		System.out.println(deltaAverage);
     		//System.out.println(delta)
     	}
     	/*----------------------UPDATE DELTA END---------------------------*/
@@ -844,7 +880,7 @@ public class GameplayState extends BasicGameState{
 	    		//Upon death, play end sound and stop playing
 	    		if(currentState != STATES.GAME_OVER_STATE)
 	    		{	
-	    			smoke.play(.1f,1f);
+	    			//smoke.play(.1f,1f);
 	    			//music.fade(2,.1f,true);
 	    			currentState = STATES.GAME_OVER_STATE;
 	    			System.out.println(currentState);
@@ -865,7 +901,7 @@ public class GameplayState extends BasicGameState{
 	    	}
 	    	/*------------------UPDATE TIMER END--------------------------*/
     	}
-    	
+        }
     }
     
     public void render(GameContainer gc, StateBasedGame sbg ,Graphics g) 
@@ -964,10 +1000,13 @@ public class GameplayState extends BasicGameState{
 		// chargeBar.barOutlinePoly.draw(400,3);
 
 		//Draw Level
-		g.drawString("Level: "+level,20,5);
+		//g.drawString("Level: "+level,20,5);  -- Backup Font
+    	mainFont.drawString(20, 5, "Level: "+level,Color.white );
+
 		
     	//Draw Score
-    	g.drawString("Score: " + score,200,5);
+    	//g.drawString("Score: " + score,200,5);  -- Backup Font
+    	mainFont.drawString(200, 5, "Score: " + score,Color.white );
     	
     	
     	//Draw Health Bar
@@ -976,7 +1015,8 @@ public class GameplayState extends BasicGameState{
 	        g.fillRect(healthX, healthY, 200, 20);
 	        g.fill(healthMeter, healthFill); 
 	        g.setColor(Color.white);
-	        g.drawString("Health: " + health,520,5);
+	        //g.drawString("Health: " + health,520,5);  -- Backup Font
+	    	mainFont.drawString(520, 5, "Health: " + health,Color.white );
     	
     	
     	
@@ -991,7 +1031,8 @@ public class GameplayState extends BasicGameState{
     	//g.drawString("Heat:",350,15);
     	
     	
-    	g.drawString("Pass: " + enemiesPassed,700,5);
+    	//g.drawString("Pass: " + enemiesPassed,700,5);  -- Backup Font
+    	mainFont.drawString(700, 5, "Pass: " + enemiesPassed,Color.white );
     	if((time%60 < 10))
     	{
     		seconds = ":0"+time%60;
@@ -1000,7 +1041,9 @@ public class GameplayState extends BasicGameState{
     	{
     		seconds = ":"+time%60;
     	}
-    	g.drawString("Time: " + time/60 + seconds,650,35);
+    	//g.drawString("Time: " + time/60 + seconds,650,35);  -- Backup Font
+    	mainFont.drawString(650, 35, "Time: " + time/60 + seconds,Color.white );
+
     	
     	//=======UPON PAUSE==========
     	//Draw Pause Box

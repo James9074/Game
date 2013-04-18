@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+<!-- GAMEPLAY -->
+  <!-- Background -->
+  <resource type="image" id="SHIP">assets\ship.png</resource>
+  <!-- HUD -->
+  <resource type="image" id="SHIELD">assets\shield.png</resource>
+  <!-- SOUNDS -->
+</resources>

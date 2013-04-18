@@ -1,9 +1,12 @@
 package com.rotarydesign.SimpleGame;
  
 import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.ScalableGame;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.Graphics;
 
  
 
@@ -28,27 +31,29 @@ public class SimpleGame extends StateBasedGame {
  
     public static void main(String[] args) throws SlickException
     {
-         AppGameContainer app = new AppGameContainer(new SimpleGame());
+         AppGameContainer app = new AppGameContainer(new SimpleGame(),800, 400, false);
  
          System.setProperty("org.lwjgl.opengl.Display.allowSoftwareOpenGL","true");
-         app.setDisplayMode(800, 400, false);
-        // app.setVSync(true);
+        //app.setDisplayMode(800, 400, false);
+        //app.setVSync(true);
          app.setTargetFrameRate(60);
          app.setIcon("assets/icon32.png");
          app.start();
+         
     }
+         
+         
+        
  
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
         this.addState(new MainMenuState(MAINMENUSTATE));
         this.addState(new GameplayState(GAMEPLAYSTATE));
         this.addState(new OptionsMenuState(OPTIONSMENUSTATE));
-        this.addState(new GameplayState(PAUSEDSTATE));
-        this.addState(new GameplayState(NEWGAMEMENUSTATE));
-        this.addState(new GameplayState(LOADGAMEMENUSTATE));
         this.addState(new CommandMenuState(COMMANDMENUSTATE));
         this.addState(new StoreMenuState(STOREMENUSTATE));
         this.addState(new LevelSelectMenuState(LEVELSELECTMENUSTATE));
+        System.out.println("lol");
         
 
     }

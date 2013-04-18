@@ -8,6 +8,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
+import org.newdawn.slick.loading.LoadingList;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeOutTransition;
@@ -53,9 +54,10 @@ public class LevelSelectMenuState extends BasicGameState {
     
  
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+    	//LoadingList.setDeferredLoading(true);
     	background = new Image("assets/menu.jpg");
     	menuMusic = new Music("assets/menuMusic.wav");
-    	menuMusic.loop();
+    	//menuMusic.loop();
     	currentState = STATES.OPTIONS_STATE;
     	gc.setShowFPS(false); 
     }
