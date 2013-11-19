@@ -208,7 +208,7 @@ public class MainMenuState extends BasicGameState {
     	
     	
     	//Controller Input Detection
-    	
+    	/*
     	// Get current state of joystick! And check, if joystick is disconnected.
     	if( !joystick.pollController() ) {
     	   System.out.println("Controller disconnected!");
@@ -263,7 +263,7 @@ public class MainMenuState extends BasicGameState {
             	    	}
             	    	else if(itemSelect == 2){
             	    		sbg.enterState(SimpleGame.COMMANDMENUSTATE, new FadeOutTransition(Color.black), null);
-            	    	}*/
+            	    	}
         		}
         		}
 
@@ -296,7 +296,7 @@ public class MainMenuState extends BasicGameState {
     	}else if(Float.compare(hatSwitchPosition, Component.POV.DOWN_RIGHT) == 0){
     	   // Do stuff when DOWN and RIGHT is pressed.
     	}
-    	
+    	*/
     	/*---------------------Get Input End-----------------------------*/
 
     	
