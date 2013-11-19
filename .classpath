@@ -15,12 +15,17 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/James/Documents/GitHub/Game/library/asm-debug-all.jar"/>
 	<classpathentry kind="lib" path="C:/Users/James/Documents/GitHub/Game/library/lwjgl_test.jar"/>
-	<classpathentry kind="lib" path="C:/Users/James/Documents/GitHub/Game/library/jinput.jar"/>
+	<classpathentry kind="lib" path="C:/Users/James/Documents/GitHub/Game/library/jinput.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Users/James/Desktop/xbox"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/James/Documents/GitHub/Game/library/lwjgl_util.jar"/>
 	<classpathentry kind="lib" path="C:/Users/James/Documents/GitHub/Game/library/lwjgl_util_applet.jar"/>
 	<classpathentry kind="lib" path="C:/Users/James/Documents/GitHub/Game/library/lzma.jar"/>
 	<classpathentry kind="lib" path="library/slick-util.jar"/>
 	<classpathentry kind="lib" path="library/jogg-0.0.7.jar"/>
 	<classpathentry kind="lib" path="library/jorbis-0.0.15.jar"/>
+	<classpathentry kind="lib" path="library/jinput.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

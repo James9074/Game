@@ -285,10 +285,12 @@ public class GameplayState extends BasicGameState{
         
         
         /*------------------------------DETECT INPUT---------------------------*/
-        //Left SHIFT
+        //Left SHIFT+
         if(input.isKeyDown(Input.KEY_LSHIFT) && currentState == STATES.PLAYING)
         {
         	speed = 0.2f * delta;
+        	
+        	
         }
         else
         {

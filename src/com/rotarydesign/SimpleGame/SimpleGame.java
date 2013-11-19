@@ -31,10 +31,11 @@ public class SimpleGame extends StateBasedGame {
  
     public static void main(String[] args) throws SlickException
     {
-         AppGameContainer app = new AppGameContainer(new SimpleGame(),800, 400, false);
+         AppGameContainer app = new AppGameContainer(new ScalableGame(new SimpleGame(),800, 400, false));
  
          System.setProperty("org.lwjgl.opengl.Display.allowSoftwareOpenGL","true");
-        //app.setDisplayMode(800, 400, false);
+        app.setDisplayMode(800, 400, false);
+        //app.setDisplayMode(1200, 600, false);
         //app.setVSync(true);
          app.setTargetFrameRate(60);
          app.setIcon("assets/icon32.png");

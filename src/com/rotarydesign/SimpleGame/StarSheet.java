@@ -23,7 +23,7 @@ public class StarSheet {
 	
 	public void update(float deltaAverage){
 		if((deltaAverage * .015) < 1){
-		posY -= 1;
+		posY -= .2f;
 		}
 		if(posY < -3200)
 		{
