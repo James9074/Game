@@ -26,7 +26,7 @@ public class SimpleGame extends StateBasedGame {
  
     public SimpleGame()
     {
-        super("New Game 01 | What else do I call it?");
+        super("Space Shooter | Rotary Design");
     }
  
     public static void main(String[] args) throws SlickException
@@ -34,9 +34,7 @@ public class SimpleGame extends StateBasedGame {
          AppGameContainer app = new AppGameContainer(new ScalableGame(new SimpleGame(),800, 400, false));
  
          System.setProperty("org.lwjgl.opengl.Display.allowSoftwareOpenGL","true");
-        app.setDisplayMode(800, 400, false);
-        //app.setDisplayMode(1200, 600, false);
-        //app.setVSync(true);
+         app.setDisplayMode(800, 400, false);
          app.setTargetFrameRate(60);
          app.setIcon("assets/icon32.png");
          app.start();
@@ -54,7 +52,6 @@ public class SimpleGame extends StateBasedGame {
         this.addState(new CommandMenuState(COMMANDMENUSTATE));
         this.addState(new StoreMenuState(STOREMENUSTATE));
         this.addState(new LevelSelectMenuState(LEVELSELECTMENUSTATE));
-        System.out.println("lol");
         
 
     }

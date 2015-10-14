@@ -1,31 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/James/Documents/GitHub/Game/library/lwjgl-debug.jar" sourcepath="library/lwjgl-debug.jar"/>
-	<classpathentry kind="lib" path="C:/Users/James/Documents/GitHub/Game/library/lwjgl.jar">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="NewGame/library/native/windows"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/james/Documents/GitHub/Generic-Space-Shooter/library/lwjgl-debug.jar" sourcepath="library/lwjgl-debug.jar"/>
+	<classpathentry kind="lib" path="C:/Users/james/Documents/GitHub/Generic-Space-Shooter/library/lwjgl.jar">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Users/James/Documents/GitHub/Game/library/native/windows"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/James/Documents/GitHub/Game/library/slick.jar">
+	<classpathentry kind="lib" path="C:/Users/james/Documents/GitHub/Generic-Space-Shooter/library/slick.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="http://www.slick2d.org/javadoc/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/James/Documents/GitHub/Game/library/asm-debug-all.jar"/>
-	<classpathentry kind="lib" path="C:/Users/James/Documents/GitHub/Game/library/lwjgl_test.jar"/>
-	<classpathentry kind="lib" path="C:/Users/James/Documents/GitHub/Game/library/jinput.jar">
+	<classpathentry kind="lib" path="C:/Users/james/Documents/GitHub/Generic-Space-Shooter/library/asm-debug-all.jar"/>
+	<classpathentry kind="lib" path="C:/Users/james/Documents/GitHub/Generic-Space-Shooter/library/lwjgl_test.jar"/>
+	<classpathentry kind="lib" path="C:/Users/james/Documents/GitHub/Generic-Space-Shooter/library/jinput.jar">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Users/James/Desktop/xbox"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/James/Documents/GitHub/Game/library/lwjgl_util.jar"/>
-	<classpathentry kind="lib" path="C:/Users/James/Documents/GitHub/Game/library/lwjgl_util_applet.jar"/>
-	<classpathentry kind="lib" path="C:/Users/James/Documents/GitHub/Game/library/lzma.jar"/>
+	<classpathentry kind="lib" path="C:/Users/james/Documents/GitHub/Generic-Space-Shooter/library/lwjgl_util.jar"/>
+	<classpathentry kind="lib" path="C:/Users/james/Documents/GitHub/Generic-Space-Shooter/library/lwjgl_util_applet.jar"/>
+	<classpathentry kind="lib" path="C:/Users/james/Documents/GitHub/Generic-Space-Shooter/library/lzma.jar"/>
 	<classpathentry kind="lib" path="library/slick-util.jar"/>
 	<classpathentry kind="lib" path="library/jogg-0.0.7.jar"/>
 	<classpathentry kind="lib" path="library/jorbis-0.0.15.jar"/>
 	<classpathentry kind="lib" path="library/jinput.jar"/>
+	<classpathentry kind="lib" path="library/lwjgl.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -59,7 +59,7 @@ public class StoreMenuState extends BasicGameState {
     
  
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-    	background = new Image("assets/menu.jpg");
+    	background = new Image("assets/menuNew.jpg");
     	//menuMusic = new Music("assets/menuMusic.wav");
     	//menuMusic.loop();
     	currentState = STATES.OPTIONS_STATE;
